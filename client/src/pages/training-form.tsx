@@ -45,9 +45,9 @@ export default function TrainingForm() {
     resolver: zodResolver(insertTrainingSchema),
     defaultValues: {
       name: "",
-      description: "",
+      description: undefined,
       date: "",
-      duration: "",
+      duration: undefined,
     },
   });
 
@@ -55,9 +55,9 @@ export default function TrainingForm() {
     if (training) {
       form.reset({
         name: training.name,
-        description: training.description || "",
+        description: training.description || undefined,
         date: training.date,
-        duration: training.duration || "",
+        duration: training.duration || undefined,
       });
     }
   }, [training, form]);
@@ -72,7 +72,7 @@ export default function TrainingForm() {
         title: "Success",
         description: "Training created successfully",
       });
-      navigate("/trainings");
+      navigate("/admin/trainings");
     },
     onError: (error: Error) => {
       if (isUnauthorizedError(error)) {
@@ -105,7 +105,7 @@ export default function TrainingForm() {
         title: "Success",
         description: "Training updated successfully",
       });
-      navigate(`/trainings/${id}`);
+      navigate(`/admin/trainings/${id}`);
     },
     onError: (error: Error) => {
       if (isUnauthorizedError(error)) {
@@ -148,7 +148,7 @@ export default function TrainingForm() {
     <div className="p-8 max-w-2xl">
       <Button 
         variant="ghost" 
-        onClick={() => navigate(isEditing ? `/trainings/${id}` : "/trainings")} 
+        onClick={() => navigate(isEditing ? `/admin/trainings/${id}` : "/admin/trainings")} 
         className="mb-4"
         data-testid="button-back"
       >
@@ -193,6 +193,7 @@ export default function TrainingForm() {
                         className="resize-none"
                         rows={4}
                         {...field}
+                        value={field.value || ""}
                         data-testid="input-description"
                       />
                     </FormControl>
@@ -228,7 +229,8 @@ export default function TrainingForm() {
                     <FormControl>
                       <Input 
                         placeholder="e.g., 4 hours" 
-                        {...field} 
+                        {...field}
+                        value={field.value || ""}
                         data-testid="input-duration"
                       />
                     </FormControl>
@@ -241,7 +243,7 @@ export default function TrainingForm() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => navigate(isEditing ? `/trainings/${id}` : "/trainings")}
+                  onClick={() => navigate(isEditing ? `/admin/trainings/${id}` : "/admin/trainings")}
                   data-testid="button-cancel"
                 >
                   Cancel

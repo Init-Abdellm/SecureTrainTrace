@@ -106,7 +106,7 @@ export default function TrainingsList() {
           <h1 className="text-3xl font-bold text-foreground">Training Programs</h1>
           <p className="text-muted-foreground mt-1">Manage your security training programs</p>
         </div>
-        <Link href="/trainings/new">
+        <Link href="/admin/trainings/new">
           <Button data-testid="button-new-training">
             <Plus className="w-4 h-4 mr-2" />
             New Training
@@ -126,7 +126,7 @@ export default function TrainingsList() {
             <p className="text-sm text-muted-foreground mb-6">
               Get started by creating your first training program
             </p>
-            <Link href="/trainings/new">
+            <Link href="/admin/trainings/new">
               <Button data-testid="button-create-first-training">
                 <Plus className="w-4 h-4 mr-2" />
                 Create Training
@@ -189,12 +189,12 @@ export default function TrainingsList() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex gap-2">
-                  <Link href={`/trainings/${training.id}`} className="flex-1">
+                  <Link href={`/admin/trainings/${training.id}`} className="flex-1">
                     <Button variant="default" className="w-full" data-testid={`button-view-training-${training.id}`}>
                       View Details
                     </Button>
                   </Link>
-                  <Link href={`/trainings/${training.id}/edit`}>
+                  <Link href={`/admin/trainings/${training.id}/edit`}>
                     <Button variant="outline" size="icon" data-testid={`button-edit-training-${training.id}`}>
                       <Pencil className="w-4 h-4" />
                     </Button>

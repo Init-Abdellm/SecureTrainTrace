@@ -172,14 +172,14 @@ export default function TrainingDetail() {
   }
 
   const filteredTrainees = (trainees || []).filter(t => {
-    const matchesSearch = 
+    const matchesSearch =
       t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.surname.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (t.companyName && t.companyName.toLowerCase().includes(searchQuery.toLowerCase()));
-    
+
     const matchesStatus = statusFilter === "all" || t.status === statusFilter;
-    
+
     return matchesSearch && matchesStatus;
   });
 
@@ -193,7 +193,7 @@ export default function TrainingDetail() {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <Link href="/trainings">
+        <Link href="/admin/trainings">
           <Button variant="ghost" className="mb-4" data-testid="button-back">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Trainings
@@ -210,7 +210,7 @@ export default function TrainingDetail() {
               {training.duration && <span>Duration: {training.duration}</span>}
             </div>
           </div>
-          <Link href={`/trainings/${id}/upload`}>
+          <Link href={`/admin/trainings/${id}/upload`}>
             <Button data-testid="button-upload-excel">
               <Upload className="w-4 h-4 mr-2" />
               Upload Excel
@@ -283,12 +283,12 @@ export default function TrainingDetail() {
           {filteredTrainees.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-muted-foreground mb-4">
-                {trainees && trainees.length > 0 
-                  ? "No trainees match your search" 
+                {trainees && trainees.length > 0
+                  ? "No trainees match your search"
                   : "No trainees yet"}
               </p>
               {!trainees || trainees.length === 0 ? (
-                <Link href={`/trainings/${id}/upload`}>
+                <Link href={`/admin/trainings/${id}/upload`}>
                   <Button data-testid="button-upload-first">
                     <Upload className="w-4 h-4 mr-2" />
                     Upload Trainees
@@ -336,13 +336,18 @@ export default function TrainingDetail() {
                             <Button
                               variant="outline"
                               size="icon"
-                              onClick={() => window.open(trainee.certificateUrl!, "_blank")}
+                              onClick={() => {
+                                const link = document.createElement('a');
+                                link.href = trainee.certificateUrl!;
+                                link.download = `certificate-${trainee.name}-${trainee.surname}.pdf`;
+                                link.click();
+                              }}
                               data-testid={`button-download-cert-${trainee.id}`}
                             >
                               <Download className="w-4 h-4" />
                             </Button>
                           )}
-                          <Link href={`/trainees/${trainee.id}/edit`}>
+                          <Link href={`/admin/trainees/${trainee.id}/edit`}>
                             <Button variant="outline" size="icon" data-testid={`button-edit-trainee-${trainee.id}`}>
                               <Pencil className="w-4 h-4" />
                             </Button>
@@ -413,9 +418,9 @@ export default function TrainingDetail() {
           <AlertDialogFooter>
             <AlertDialogCancel data-testid="button-cancel-status">Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => traineeToUpdate && updateStatusMutation.mutate({ 
-                traineeId: traineeToUpdate.id, 
-                status: newStatus 
+              onClick={() => traineeToUpdate && updateStatusMutation.mutate({
+                traineeId: traineeToUpdate.id,
+                status: newStatus
               })}
               data-testid="button-confirm-status"
             >

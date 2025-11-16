@@ -1,8 +1,7 @@
-// Referencing blueprint: javascript_log_in_with_replit
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth, isAuthenticated } from "./auth";
 import { insertTrainingSchema, insertTraineeSchema, excelTraineeSchema } from "@shared/schema";
 import multer from "multer";
 import * as XLSX from "xlsx";
@@ -13,20 +12,8 @@ import { randomUUID } from "crypto";
 const upload = multer({ storage: multer.memoryStorage() });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Auth middleware
-  await setupAuth(app);
-
-  // Auth routes
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      res.json(user);
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      res.status(500).json({ message: "Failed to fetch user" });
-    }
-  });
+  // Setup authentication
+  setupAuth(app);
 
   // Training CRUD routes
   app.get('/api/trainings', isAuthenticated, async (req, res) => {
@@ -206,18 +193,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const rowNum = i + 2; // Excel rows start at 1, header is row 1
 
         try {
-          const validated = excelTraineeSchema.parse(row);
+          // Normalize the row data - convert all number fields to strings
+          const normalizedRow = {
+            name: row.name?.toString() || '',
+            surname: row.surname?.toString() || '',
+            email: row.email?.toString() || '',
+            phone_number: row.phone_number?.toString() || '',
+            company_name: row.company_name?.toString() || undefined,
+          };
+
+          const validated = excelTraineeSchema.parse(normalizedRow);
 
           // Check if trainee already exists
           const existing = await storage.getTraineeByEmail(validated.email);
           if (existing) {
             errors.push(`Row ${rowNum}: Email ${validated.email} already exists`);
-            continue;
-          }
-
-          // Verify training_id matches
-          if (validated.training_id !== trainingId) {
-            errors.push(`Row ${rowNum}: Training ID mismatch`);
             continue;
           }
 
@@ -227,16 +217,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
             email: validated.email,
             phoneNumber: validated.phone_number,
             companyName: validated.company_name || null,
-            trainingId: validated.training_id,
-            trainingDate: validated.date,
+            trainingId: trainingId, // Use the training ID from the context
+            trainingDate: training.date, // Use the training date from the training
             status: "pending",
           });
         } catch (error: any) {
           if (error.errors) {
-            const errorMessages = error.errors.map((e: any) => e.message).join(", ");
+            const errorMessages = error.errors.map((e: any) => `${e.path.join('.')}: ${e.message}`).join(", ");
             errors.push(`Row ${rowNum}: ${errorMessages}`);
           } else {
-            errors.push(`Row ${rowNum}: Invalid data`);
+            errors.push(`Row ${rowNum}: Invalid data - ${error.message}`);
           }
         }
       }
@@ -370,11 +360,11 @@ async function generateCertificate(
       doc.moveDown(2);
 
       // Generate QR code - use full domain from environment
-      const domain = process.env.REPLIT_DOMAINS?.split(',')[0] || process.env.REPLIT_DEV_DOMAIN || 'localhost:5000';
+      const domain = process.env.APP_DOMAIN || 'localhost:5000';
       const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
       const verificationUrl = `${protocol}://${domain}/verify/${trainee.id}`;
       
-      QRCode.toDataURL(verificationUrl, { width: 150 }, (err, url) => {
+      QRCode.toDataURL(verificationUrl, { width: 150 }, (err: Error | null | undefined, url: string) => {
         if (err) {
           console.error('QR Code generation error:', err);
           doc.end();

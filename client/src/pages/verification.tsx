@@ -160,7 +160,12 @@ export default function Verification() {
 
                   {trainee.certificateUrl && (
                     <Button
-                      onClick={() => window.open(trainee.certificateUrl, "_blank")}
+                      onClick={() => {
+                        const link = document.createElement('a');
+                        link.href = trainee.certificateUrl!;
+                        link.download = `certificate-${trainee.name}-${trainee.surname}.pdf`;
+                        link.click();
+                      }}
                       className="w-full"
                       data-testid="button-download-certificate"
                     >

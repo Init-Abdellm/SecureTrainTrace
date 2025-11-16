@@ -65,7 +65,7 @@ export default function ExcelUpload() {
       setUploadResult(data);
       queryClient.invalidateQueries({ queryKey: ["/api/trainings", id, "trainees"] });
       queryClient.invalidateQueries({ queryKey: ["/api/trainees"] });
-      
+
       if (data.failed === 0) {
         toast({
           title: "Success",
@@ -112,7 +112,7 @@ export default function ExcelUpload() {
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    
+
     const files = e.dataTransfer.files;
     if (files.length > 0) {
       const file = files[0];
@@ -143,22 +143,29 @@ export default function ExcelUpload() {
     }
   };
 
-  const downloadTemplate = () => {
-    const csvContent = "name,surname,email,phone_number,company_name,date,training_name,training_id\n";
-    const blob = new Blob([csvContent], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "trainee_template.csv";
-    a.click();
-    URL.revokeObjectURL(url);
+  const downloadTemplate = async () => {
+    // Create a proper Excel file with XLSX library
+    const XLSX = await import('xlsx');
+
+    // Create sample data with proper headers
+    const data = [
+      { name: 'John', surname: 'Doe', email: 'john@example.com', phone_number: '1234567890', company_name: 'Acme Corp' },
+      { name: 'Jane', surname: 'Smith', email: 'jane@example.com', phone_number: '0987654321', company_name: 'Tech Inc' }
+    ];
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Trainees');
+
+    // Generate Excel file
+    XLSX.writeFile(workbook, 'trainee_template.xlsx');
   };
 
   return (
     <div className="p-8 max-w-4xl">
-      <Button 
-        variant="ghost" 
-        onClick={() => navigate(`/trainings/${id}`)} 
+      <Button
+        variant="ghost"
+        onClick={() => navigate(`/admin/trainings/${id}`)}
         className="mb-4"
         data-testid="button-back"
       >
@@ -178,14 +185,14 @@ export default function ExcelUpload() {
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Required Columns</AlertTitle>
             <AlertDescription>
-              Your Excel file must contain these columns: name, surname, email, phone_number, 
-              company_name (optional), date, training_name, training_id
+              Your Excel file must contain these columns: name, surname, email, phone_number,
+              company_name (optional). The training date and ID will be automatically set from the current training.
             </AlertDescription>
           </Alert>
 
           <div className="flex justify-end">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={downloadTemplate}
               data-testid="button-download-template"
             >
@@ -303,8 +310,8 @@ export default function ExcelUpload() {
                   <CardContent>
                     <div className="max-h-96 overflow-y-auto space-y-2">
                       {uploadResult.errors.map((error, index) => (
-                        <div 
-                          key={index} 
+                        <div
+                          key={index}
                           className="text-sm text-destructive bg-destructive/10 p-3 rounded-md"
                         >
                           {error}
@@ -317,7 +324,7 @@ export default function ExcelUpload() {
 
               {uploadResult.imported > 0 && (
                 <div className="flex justify-end">
-                  <Button onClick={() => navigate(`/trainings/${id}`)} data-testid="button-view-trainees">
+                  <Button onClick={() => navigate(`/admin/trainings/${id}`)} data-testid="button-view-trainees">
                     View Trainees
                   </Button>
                 </div>

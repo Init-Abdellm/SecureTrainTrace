@@ -67,7 +67,7 @@ export const trainees = pgTable("trainees", {
   trainingId: varchar("training_id").notNull().references(() => trainings.id, { onDelete: "cascade" }),
   trainingDate: date("training_date").notNull(),
   status: varchar("status", { length: 20 }).notNull().default("pending"),
-  certificateUrl: varchar("certificate_url", { length: 500 }),
+  certificateUrl: text("certificate_url"),
   certificateId: varchar("certificate_id", { length: 255 }),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -88,16 +88,13 @@ export const insertTraineeSchema = createInsertSchema(trainees).omit({
 export type InsertTrainee = z.infer<typeof insertTraineeSchema>;
 export type Trainee = typeof trainees.$inferSelect;
 
-// Excel upload validation schema
+// Excel upload validation schema - simplified to only require trainee info
 export const excelTraineeSchema = z.object({
   name: z.string().min(1, "Name is required"),
   surname: z.string().min(1, "Surname is required"),
   email: z.string().email("Invalid email format"),
   phone_number: z.string().min(1, "Phone number is required"),
   company_name: z.string().optional(),
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
-  training_name: z.string().min(1, "Training name is required"),
-  training_id: z.string().min(1, "Training ID is required"),
 });
 
 export type ExcelTrainee = z.infer<typeof excelTraineeSchema>;

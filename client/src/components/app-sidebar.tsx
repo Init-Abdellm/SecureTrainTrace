@@ -19,17 +19,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 const menuItems = [
   {
     title: "Dashboard",
-    url: "/",
+    url: "/admin",
     icon: Home,
   },
   {
     title: "Trainings",
-    url: "/trainings",
+    url: "/admin/trainings",
     icon: GraduationCap,
   },
   {
     title: "Analytics",
-    url: "/analytics",
+    url: "/admin/analytics",
     icon: BarChart3,
   },
 ];
@@ -39,10 +39,7 @@ export function AppSidebar() {
   const { user } = useAuth();
 
   const getInitials = () => {
-    if (!user) return "AD";
-    const first = user.firstName?.charAt(0) || "";
-    const last = user.lastName?.charAt(0) || "";
-    return (first + last).toUpperCase() || user.email?.charAt(0).toUpperCase() || "AD";
+    return "AD";
   };
 
   return (
@@ -58,7 +55,7 @@ export function AppSidebar() {
           </div>
         </div>
       </SidebarHeader>
-      
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wide px-6">
@@ -67,13 +64,13 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => {
-                const isActive = location === item.url || 
-                  (item.url !== "/" && location.startsWith(item.url));
-                
+                const isActive = location === item.url ||
+                  (item.url !== "/admin" && location.startsWith(item.url));
+
                 return (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton 
-                      asChild 
+                    <SidebarMenuButton
+                      asChild
                       data-active={isActive}
                       className="px-6 py-3"
                       data-testid={`sidebar-${item.title.toLowerCase()}`}
@@ -94,23 +91,23 @@ export function AppSidebar() {
       <SidebarFooter className="p-4 border-t border-sidebar-border">
         <div className="flex items-center gap-3 px-2 py-2">
           <Avatar className="w-9 h-9">
-            <AvatarImage src={user?.profileImageUrl || undefined} />
             <AvatarFallback className="text-xs font-medium bg-primary text-primary-foreground">
               {getInitials()}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-sidebar-foreground truncate">
-              {user?.firstName && user?.lastName 
-                ? `${user.firstName} ${user.lastName}` 
-                : user?.email || "Admin"}
+              Administrator
             </p>
-            <p className="text-xs text-muted-foreground truncate">Administrator</p>
+            <p className="text-xs text-muted-foreground truncate">System Admin</p>
           </div>
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => window.location.href = "/api/logout"}
+            onClick={async () => {
+              await fetch("/api/logout", { method: "POST" });
+              window.location.href = "/";
+            }}
             className="flex-shrink-0"
             data-testid="button-logout"
           >

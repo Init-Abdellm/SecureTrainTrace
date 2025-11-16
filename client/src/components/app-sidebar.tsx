@@ -43,24 +43,20 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar>
-      <SidebarHeader className="p-6">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-10 h-10 rounded-md bg-primary">
-            <GraduationCap className="w-6 h-6 text-primary-foreground" />
+    <Sidebar className="border-r border-border bg-white">
+      <SidebarHeader className="px-4 py-3 border-b border-border">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center w-8 h-8 rounded bg-primary">
+            <GraduationCap className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-base font-semibold text-sidebar-foreground">Training Platform</h1>
-            <p className="text-xs text-muted-foreground">Security & Compliance</p>
+            <h1 className="text-sm font-bold text-sidebar-foreground">Training Platform</h1>
           </div>
         </div>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="px-0 py-2">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wide px-6">
-            Main Menu
-          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => {
@@ -72,12 +68,12 @@ export function AppSidebar() {
                     <SidebarMenuButton
                       asChild
                       data-active={isActive}
-                      className="px-6 py-3"
+                      className="px-4 py-2 mx-2 rounded hover:bg-[#F3F2F2] data-[active=true]:bg-[#E8F4FB] data-[active=true]:text-[#0176D3] data-[active=true]:font-bold data-[active=true]:border-l-4 data-[active=true]:border-[#0176D3] data-[active=true]:rounded-none data-[active=true]:pl-[12px]"
                       data-testid={`sidebar-${item.title.toLowerCase()}`}
                     >
                       <Link href={item.url}>
-                        <item.icon className="w-5 h-5" />
-                        <span className="font-medium">{item.title}</span>
+                        <item.icon className="w-4 h-4" />
+                        <span className="text-sm">{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -88,15 +84,15 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-sidebar-border">
-        <div className="flex items-center gap-3 px-2 py-2">
-          <Avatar className="w-9 h-9">
-            <AvatarFallback className="text-xs font-medium bg-primary text-primary-foreground">
+      <SidebarFooter className="p-3 border-t border-sidebar-border">
+        <div className="flex items-center gap-2 px-2 py-1">
+          <Avatar className="w-8 h-8">
+            <AvatarFallback className="text-xs font-bold bg-[#0176D3] text-white">
               {getInitials()}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-sidebar-foreground truncate">
+            <p className="text-xs font-bold text-sidebar-foreground truncate">
               Administrator
             </p>
             <p className="text-xs text-muted-foreground truncate">System Admin</p>
@@ -108,7 +104,7 @@ export function AppSidebar() {
               await fetch("/api/logout", { method: "POST" });
               window.location.href = "/";
             }}
-            className="flex-shrink-0"
+            className="flex-shrink-0 h-8 w-8"
             data-testid="button-logout"
           >
             <LogOut className="w-4 h-4" />

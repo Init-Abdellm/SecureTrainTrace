@@ -102,16 +102,18 @@ function AppContent() {
   return (
     <>
       <SidebarProvider style={sidebarStyle as React.CSSProperties}>
-        <div className="flex h-screen w-full">
+        <div className="flex h-screen w-full bg-white">
           <AppSidebar />
           <div className="flex flex-col flex-1 overflow-hidden">
-            <header className="flex items-center justify-between h-16 px-6 border-b border-border bg-background">
-              <SidebarTrigger data-testid="button-sidebar-toggle" />
-              <div className="text-sm text-muted-foreground">
-                Security Training Platform
+            <header className="flex items-center justify-between h-12 px-4 border-b border-border bg-white shadow-sm">
+              <div className="flex items-center gap-3">
+                <SidebarTrigger data-testid="button-sidebar-toggle" className="h-8 w-8" />
+                <div className="text-sm font-bold text-foreground">
+                  Security Training Platform
+                </div>
               </div>
             </header>
-            <main className="flex-1 overflow-y-auto bg-background">
+            <main className="flex-1 overflow-y-auto bg-[#F3F2F2]">
               <Router />
             </main>
           </div>

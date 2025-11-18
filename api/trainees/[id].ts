@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { isAuthenticated } from "../_lib/auth";
 import { storage } from "../_lib/storage";
-import { insertTraineeSchema } from "@shared/schema";
+import { insertTraineeSchema } from "../../shared/schema";
 import { randomUUID } from "crypto";
 import PDFDocument from "pdfkit";
 import QRCode from "qrcode";

@@ -21,8 +21,11 @@ Make sure to set the following environment variables in your Vercel project sett
    - Set your desired admin password
 
 5. **APP_DOMAIN** (Optional) - Your production domain
+   - Set to just the domain name (e.g., `hse-beige-tau.vercel.app` or `yourdomain.com`)
+   - Do NOT include `https://` or trailing slashes
    - If not set, Vercel will use `VERCEL_URL` automatically
    - Only needed if you want to override the default domain for certificate QR codes
+   - Example: `hse-beige-tau.vercel.app` (not `https://hse-beige-tau.vercel.app/`)
 
 ## Deployment Steps
 

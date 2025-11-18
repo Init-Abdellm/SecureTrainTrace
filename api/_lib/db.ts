@@ -1,6 +1,6 @@
 import { Pool } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
-import * as schema from "@shared/schema";
+import * as schema from "../../shared/schema";
 
 // For Vercel serverless, Neon works directly with fetch API
 // No WebSocket constructor needed in serverless environments

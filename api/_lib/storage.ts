@@ -5,7 +5,7 @@ import {
   type InsertTraining,
   type Trainee,
   type InsertTrainee,
-} from "@shared/schema";
+} from "../../shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
 

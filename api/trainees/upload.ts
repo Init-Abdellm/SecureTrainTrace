@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { isAuthenticated } from "../_lib/auth";
 import { storage } from "../_lib/storage";
-import { excelTraineeSchema } from "@shared/schema";
+import { excelTraineeSchema } from "../../shared/schema";
 import * as XLSX from "xlsx";
 import multiparty from "multiparty";
 import { tmpdir } from "os";

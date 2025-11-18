@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { isAuthenticated } from "../_lib/auth";
 import { storage } from "../_lib/storage";
-import { insertTrainingSchema } from "@shared/schema";
+import { insertTrainingSchema } from "../../shared/schema";
 
 export default async function handler(
   req: VercelRequest,

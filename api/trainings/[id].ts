@@ -17,7 +17,9 @@ export default async function handler(
 
   try {
     if (req.method === "GET") {
+      console.log("Fetching training with ID:", id);
       const training = await storage.getTraining(id as string);
+      console.log("Training found:", training ? "yes" : "no");
       if (!training) {
         return res.status(404).json({ message: "Training not found" });
       }

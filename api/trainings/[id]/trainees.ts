@@ -19,7 +19,9 @@ export default async function handler(
   const { id: trainingId } = req.query;
 
   try {
+    console.log("Fetching trainees for training ID:", trainingId);
     const trainees = await storage.getTraineesByTrainingId(trainingId as string);
+    console.log("Trainees found:", trainees.length);
     return res.json(trainees);
   } catch (error) {
     console.error("Error fetching trainees:", error);

@@ -1,4 +1,3 @@
-import { parse } from "cookie";
 import { createHmac, timingSafeEqual } from "crypto";
 
 const COOKIE_NAME = "session";
@@ -6,6 +5,20 @@ const SECRET = process.env.SESSION_SECRET || "change-this-secret";
 
 export interface SessionData {
   isAuthenticated: boolean;
+}
+
+function parseCookies(cookieHeader: string): Record<string, string> {
+  const cookies: Record<string, string> = {};
+  if (!cookieHeader) return cookies;
+  
+  cookieHeader.split(";").forEach((cookie) => {
+    const [name, ...rest] = cookie.trim().split("=");
+    if (name && rest.length > 0) {
+      cookies[name] = decodeURIComponent(rest.join("="));
+    }
+  });
+  
+  return cookies;
 }
 
 function sign(value: string, secret: string): string {
@@ -41,7 +54,7 @@ function unsign(value: string, secret: string): string | null {
 export function getSession(cookieHeader: string | null): SessionData | null {
   if (!cookieHeader) return null;
   
-  const cookies = parse(cookieHeader);
+  const cookies = parseCookies(cookieHeader);
   const sessionCookie = cookies[COOKIE_NAME];
   
   if (!sessionCookie) return null;

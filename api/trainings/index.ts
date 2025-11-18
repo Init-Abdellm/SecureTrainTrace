@@ -1,31 +1,34 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { requireAuth } from '../_lib/auth.js';
-import { storage } from '../_lib/storage.js';
-import { insertTrainingSchema } from '../../shared/schema.js';
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { isAuthenticated } from "../_lib/auth";
+import { storage } from "../_lib/storage";
+import { insertTrainingSchema } from "@shared/schema";
 
-async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method === 'GET') {
-    try {
-      const trainings = await storage.getAllTrainings();
-      return res.json(trainings);
-    } catch (error) {
-      console.error('Error fetching trainings:', error);
-      return res.status(500).json({ message: 'Failed to fetch trainings' });
-    }
+export default async function handler(
+  req: VercelRequest,
+  res: VercelResponse
+) {
+  const cookieHeader = req.headers.cookie || null;
+  
+  if (!isAuthenticated(cookieHeader)) {
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
-  if (req.method === 'POST') {
-    try {
+  try {
+    if (req.method === "GET") {
+      const trainings = await storage.getAllTrainings();
+      return res.json(trainings);
+    }
+
+    if (req.method === "POST") {
       const validated = insertTrainingSchema.parse(req.body);
       const training = await storage.createTraining(validated);
       return res.json(training);
-    } catch (error: any) {
-      console.error('Error creating training:', error);
-      return res.status(400).json({ message: error.message || 'Failed to create training' });
     }
-  }
 
-  return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ message: "Method not allowed" });
+  } catch (error: any) {
+    console.error("Error in trainings route:", error);
+    return res.status(400).json({ message: error.message || "Failed to process request" });
+  }
 }
 
-export default requireAuth(handler);

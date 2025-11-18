@@ -1,26 +1,23 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { serialize } from 'cookie';
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { createSessionCookie } from "./_lib/auth";
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
+export default async function handler(
+  req: VercelRequest,
+  res: VercelResponse
+) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
   }
 
   const { username, password } = req.body;
 
   if (username === process.env.AUTH_USERNAME && password === process.env.AUTH_PASSWORD) {
-    const token = Buffer.from(`${username}:${password}`).toString('base64');
+    const cookie = createSessionCookie({ isAuthenticated: true });
     
-    res.setHeader('Set-Cookie', serialize('auth_token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60,
-      path: '/'
-    }));
-    
+    res.setHeader("Set-Cookie", cookie);
     return res.json({ success: true });
+  } else {
+    return res.status(401).json({ message: "Invalid credentials" });
   }
-
-  res.status(401).json({ message: 'Invalid credentials' });
 }
+

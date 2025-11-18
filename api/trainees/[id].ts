@@ -1,42 +1,48 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { requireAuth } from '../_lib/auth.js';
-import { storage } from '../_lib/storage.js';
-import { insertTraineeSchema } from '../../shared/schema.js';
-import { randomUUID } from 'crypto';
-import PDFDocument from 'pdfkit';
-import QRCode from 'qrcode';
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { isAuthenticated } from "../_lib/auth";
+import { storage } from "../_lib/storage";
+import { insertTraineeSchema } from "@shared/schema";
+import { randomUUID } from "crypto";
+import PDFDocument from "pdfkit";
+import QRCode from "qrcode";
 
-async function handler(req: VercelRequest, res: VercelResponse) {
-  const { id } = req.query;
-
-  if (req.method === 'GET') {
-    try {
-      const trainee = await storage.getTrainee(id as string);
-      if (!trainee) {
-        return res.status(404).json({ message: 'Trainee not found' });
-      }
-      return res.json(trainee);
-    } catch (error) {
-      console.error('Error fetching trainee:', error);
-      return res.status(500).json({ message: 'Failed to fetch trainee' });
-    }
+export default async function handler(
+  req: VercelRequest,
+  res: VercelResponse
+) {
+  const cookieHeader = req.headers.cookie || null;
+  
+  if (!isAuthenticated(cookieHeader)) {
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
-  if (req.method === 'PATCH') {
-    try {
-      const { status, ...otherFields } = req.body;
+  const { id } = req.query;
 
-      if (status === 'passed') {
+  try {
+    if (req.method === "GET") {
+      const trainee = await storage.getTrainee(id as string);
+      if (!trainee) {
+        return res.status(404).json({ message: "Trainee not found" });
+      }
+      return res.json(trainee);
+    }
+
+    if (req.method === "PATCH") {
+      const { status, ...otherFields } = req.body;
+      
+      // If status is changing to "passed", generate certificate
+      if (status === "passed") {
         const trainee = await storage.getTrainee(id as string);
         if (!trainee) {
-          return res.status(404).json({ message: 'Trainee not found' });
+          return res.status(404).json({ message: "Trainee not found" });
         }
 
         const training = await storage.getTraining(trainee.trainingId);
         if (!training) {
-          return res.status(404).json({ message: 'Training not found' });
+          return res.status(404).json({ message: "Training not found" });
         }
 
+        // Generate certificate
         const certificateId = `CERT-${randomUUID()}`;
         const certificateUrl = await generateCertificate(trainee, training, certificateId);
 
@@ -53,29 +59,29 @@ async function handler(req: VercelRequest, res: VercelResponse) {
       const validated = insertTraineeSchema.partial().parse(req.body);
       const trainee = await storage.updateTrainee(id as string, validated);
       if (!trainee) {
-        return res.status(404).json({ message: 'Trainee not found' });
+        return res.status(404).json({ message: "Trainee not found" });
       }
       return res.json(trainee);
-    } catch (error: any) {
-      console.error('Error updating trainee:', error);
-      return res.status(400).json({ message: error.message || 'Failed to update trainee' });
     }
-  }
 
-  if (req.method === 'DELETE') {
-    try {
+    if (req.method === "DELETE") {
       await storage.deleteTrainee(id as string);
       return res.json({ success: true });
-    } catch (error) {
-      console.error('Error deleting trainee:', error);
-      return res.status(500).json({ message: 'Failed to delete trainee' });
     }
-  }
 
-  return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ message: "Method not allowed" });
+  } catch (error: any) {
+    console.error("Error in trainee route:", error);
+    return res.status(400).json({ message: error.message || "Failed to process request" });
+  }
 }
 
-async function generateCertificate(trainee: any, training: any, certificateId: string): Promise<string> {
+// Certificate generation helper function
+async function generateCertificate(
+  trainee: any,
+  training: any,
+  certificateId: string
+): Promise<string> {
   return new Promise((resolve, reject) => {
     try {
       const doc = new PDFDocument({
@@ -92,44 +98,78 @@ async function generateCertificate(trainee: any, training: any, certificateId: s
         resolve(dataUrl);
       });
 
-      doc.fontSize(32).font('Helvetica-Bold').text('Certificate of Completion', { align: 'center' });
-      doc.moveDown(2);
-      doc.fontSize(16).font('Helvetica').text('This certifies that', { align: 'center' });
-      doc.moveDown(0.5);
-      doc.fontSize(24).font('Helvetica-Bold').text(`${trainee.name} ${trainee.surname}`, { align: 'center' });
-      doc.moveDown(0.5);
-      doc.fontSize(16).font('Helvetica').text('has successfully completed the training', { align: 'center' });
-      doc.moveDown(0.5);
-      doc.fontSize(20).font('Helvetica-Bold').text(training.name, { align: 'center' });
-      doc.moveDown(0.5);
-      doc.fontSize(14).font('Helvetica').text(`on ${new Date(trainee.trainingDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, { align: 'center' });
+      // Header
+      doc.fontSize(32)
+        .font('Helvetica-Bold')
+        .text('Certificate of Completion', { align: 'center' });
+
       doc.moveDown(2);
 
-      const domain = process.env.VERCEL_URL || process.env.APP_DOMAIN || 'localhost:5000';
-      const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+      // Body
+      doc.fontSize(16)
+        .font('Helvetica')
+        .text('This certifies that', { align: 'center' });
+
+      doc.moveDown(0.5);
+
+      doc.fontSize(24)
+        .font('Helvetica-Bold')
+        .text(`${trainee.name} ${trainee.surname}`, { align: 'center' });
+
+      doc.moveDown(0.5);
+
+      doc.fontSize(16)
+        .font('Helvetica')
+        .text('has successfully completed the training', { align: 'center' });
+
+      doc.moveDown(0.5);
+
+      doc.fontSize(20)
+        .font('Helvetica-Bold')
+        .text(training.name, { align: 'center' });
+
+      doc.moveDown(0.5);
+
+      doc.fontSize(14)
+        .font('Helvetica')
+        .text(`on ${new Date(trainee.trainingDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, { align: 'center' });
+
+      doc.moveDown(2);
+
+      // Generate QR code - use full domain from environment
+      // Vercel provides VERCEL_URL in production, or use APP_DOMAIN if set
+      const domain = process.env.APP_DOMAIN || process.env.VERCEL_URL || process.env.VERCEL_BRANCH_URL || 'localhost:5000';
+      const protocol = process.env.NODE_ENV === "production" || process.env.VERCEL ? "https" : "http";
       const verificationUrl = `${protocol}://${domain}/verify/${trainee.id}`;
-
-      QRCode.toDataURL(verificationUrl, { width: 150 }, (err, url) => {
+      
+      QRCode.toDataURL(verificationUrl, { width: 150 }, (err: Error | null | undefined, url: string) => {
         if (err) {
           console.error('QR Code generation error:', err);
           doc.end();
           return;
         }
 
+        // Add QR code to PDF
         const qrImage = url.split(',')[1];
         const qrBuffer = Buffer.from(qrImage, 'base64');
-
+        
         doc.image(qrBuffer, doc.page.width - 150 - 72, doc.page.height - 150 - 72, {
           width: 120,
           height: 120
         });
 
-        doc.fontSize(10).font('Helvetica').text(`Certificate ID: ${certificateId}`, 72, doc.page.height - 100, { align: 'left' });
+        // Footer
+        doc.fontSize(10)
+          .font('Helvetica')
+          .text(`Certificate ID: ${certificateId}`, 72, doc.page.height - 100, { align: 'left' });
+
         doc.text(`Issue Date: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, 72, doc.page.height - 80, { align: 'left' });
-        doc.fontSize(8).text('Scan QR code to verify', doc.page.width - 150 - 72, doc.page.height - 50, {
-          width: 120,
-          align: 'center'
-        });
+
+        doc.fontSize(8)
+          .text('Scan QR code to verify', doc.page.width - 150 - 72, doc.page.height - 50, {
+            width: 120,
+            align: 'center'
+          });
 
         doc.end();
       });
@@ -139,4 +179,3 @@ async function generateCertificate(trainee: any, training: any, certificateId: s
   });
 }
 
-export default requireAuth(handler);

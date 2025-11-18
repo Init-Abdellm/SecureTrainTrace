@@ -1,11 +1,14 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 import { HardHat, CheckCircle, XCircle, Search, Download, QrCode, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useQuery } from "@tanstack/react-query";
+import { LanguageSelector } from "@/components/language-selector";
 
 export default function PublicVerification() {
+  const { t } = useTranslation();
   const [, setLocation] = useLocation();
   const [searchId, setSearchId] = useState("");
   const [verifyId, setVerifyId] = useState<string | null>(null);
@@ -41,17 +44,20 @@ export default function PublicVerification() {
               <div className="w-9 h-9 bg-orange-600 rounded-lg flex items-center justify-center">
                 <HardHat className="w-5 h-5 text-white" strokeWidth={2.5} />
               </div>
-              <span className="text-base font-bold text-gray-900">Construction Site Safety</span>
+              <span className="text-base font-bold text-gray-900">{t("nav.constructionSiteSafety")}</span>
             </button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setLocation("/admin")}
-              className="border-gray-300 h-9"
-            >
-              <Shield className="w-4 h-4 mr-2" />
-              Admin Login
-            </Button>
+            <div className="flex items-center gap-2">
+              <LanguageSelector />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setLocation("/admin")}
+                className="border-gray-300 h-9"
+              >
+                <Shield className="w-4 h-4 mr-2" />
+                {t("nav.adminLogin")}
+              </Button>
+            </div>
           </div>
         </div>
       </nav>
@@ -68,10 +74,10 @@ export default function PublicVerification() {
                     <QrCode className="w-8 h-8 text-orange-500" />
                   </div>
                   <h1 className="text-5xl lg:text-6xl font-bold text-zinc-900 dark:text-white leading-[1.1] tracking-tight">
-                    Verify Certificate
+                    {t("verification.title")}
                   </h1>
                   <p className="text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                    Enter a certificate ID or trainee ID to instantly verify training completion and authenticity.
+                    {t("verification.subtitle")}
                   </p>
                 </div>
 
@@ -79,7 +85,7 @@ export default function PublicVerification() {
                   <div className="relative">
                     <Input
                       type="text"
-                      placeholder="Enter Certificate ID or Trainee ID"
+                      placeholder={t("verification.placeholder")}
                       value={searchId}
                       onChange={(e) => setSearchId(e.target.value)}
                       className="h-14 text-base px-6 border-2 border-zinc-200 dark:border-zinc-800 focus:border-orange-500 dark:focus:border-orange-500 rounded-xl"
@@ -91,24 +97,24 @@ export default function PublicVerification() {
                     className="w-full h-14 text-base font-medium bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/25"
                   >
                     <Search className="w-5 h-5 mr-2" />
-                    Verify Certificate
+                    {t("verification.verify")}
                   </Button>
                 </form>
 
                 <div className="bg-zinc-50 dark:bg-zinc-900 rounded-2xl p-6 border border-zinc-200 dark:border-zinc-800">
-                  <h3 className="font-semibold text-zinc-900 dark:text-white mb-3">How to verify:</h3>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white mb-3">{t("verification.howToVerify.title")}</h3>
                   <ul className="space-y-2 text-sm text-zinc-600 dark:text-zinc-400">
                     <li className="flex items-start gap-2">
                       <span className="text-orange-500 mt-0.5">•</span>
-                      <span>Scan the QR code on the certificate using your phone camera</span>
+                      <span>{t("verification.howToVerify.point1")}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-orange-500 mt-0.5">•</span>
-                      <span>Or manually enter the Certificate ID or Trainee ID shown on the certificate</span>
+                      <span>{t("verification.howToVerify.point2")}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-orange-500 mt-0.5">•</span>
-                      <span>The system will instantly verify if the certificate is valid</span>
+                      <span>{t("verification.howToVerify.point3")}</span>
                     </li>
                   </ul>
                 </div>
@@ -132,7 +138,7 @@ export default function PublicVerification() {
           {isLoading && (
             <div className="text-center py-20">
               <div className="inline-block w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-6"></div>
-              <p className="text-xl text-zinc-600 dark:text-zinc-400">Verifying certificate...</p>
+              <p className="text-xl text-zinc-600 dark:text-zinc-400">{t("verification.verifying")}</p>
             </div>
           )}
 
@@ -147,10 +153,10 @@ export default function PublicVerification() {
                       <CheckCircle className="w-10 h-10 text-white" />
                     </div>
                     <h2 className="text-4xl font-bold text-green-900 dark:text-green-100 mb-3">
-                      Certificate Verified
+                      {t("verification.verified.title")}
                     </h2>
                     <p className="text-lg text-green-700 dark:text-green-300">
-                      This certificate is valid and authentic
+                      {t("verification.verified.subtitle")}
                     </p>
                   </div>
 
@@ -161,21 +167,21 @@ export default function PublicVerification() {
                     </h3>
 
                     <div className="grid md:grid-cols-2 gap-6 mb-8">
-                      <DetailItem label="Training" value={data.trainee.trainingName} />
+                      <DetailItem label={t("verification.verified.training")} value={data.trainee.trainingName} />
                       <DetailItem
-                        label="Training Date"
+                        label={t("verification.verified.trainingDate")}
                         value={new Date(data.trainee.trainingDate).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "long",
                           day: "numeric",
                         })}
                       />
-                      <DetailItem label="Email" value={data.trainee.email} />
-                      <DetailItem label="Phone" value={data.trainee.phoneNumber} />
+                      <DetailItem label={t("common.email")} value={data.trainee.email} />
+                      <DetailItem label={t("common.phone")} value={data.trainee.phoneNumber} />
                       {data.trainee.companyName && (
-                        <DetailItem label="Company" value={data.trainee.companyName} />
+                        <DetailItem label={t("common.company")} value={data.trainee.companyName} />
                       )}
-                      <DetailItem label="Certificate ID" value={data.trainee.certificateId} />
+                      <DetailItem label={t("verification.verified.certificateId")} value={data.trainee.certificateId} />
                     </div>
 
                     {data.trainee.certificateUrl && (
@@ -186,7 +192,7 @@ export default function PublicVerification() {
                       >
                         <Button className="w-full h-14 text-base font-medium bg-orange-500 hover:bg-orange-600 text-white shadow-lg">
                           <Download className="w-5 h-5 mr-2" />
-                          Download Certificate
+                          {t("verification.verified.downloadCertificate")}
                         </Button>
                       </a>
                     )}
@@ -201,7 +207,7 @@ export default function PublicVerification() {
                       }}
                       className="border-2 border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900"
                     >
-                      Verify Another Certificate
+                      {t("verification.verified.verifyAnother")}
                     </Button>
                   </div>
                 </div>
@@ -211,10 +217,10 @@ export default function PublicVerification() {
                     <XCircle className="w-10 h-10 text-white" />
                   </div>
                   <h2 className="text-3xl font-bold text-red-900 dark:text-red-100 mb-3">
-                    Certificate Not Found
+                    {t("verification.notFound.title")}
                   </h2>
                   <p className="text-lg text-red-700 dark:text-red-300 mb-8">
-                    This certificate ID is invalid, or the certificate has not been issued yet.
+                    {t("verification.notFound.description")}
                   </p>
                   <Button
                     variant="outline"
@@ -224,7 +230,7 @@ export default function PublicVerification() {
                     }}
                     className="border-2 border-red-200 dark:border-red-900 hover:bg-red-50 dark:hover:bg-red-950/20"
                   >
-                    Try Another ID
+                    {t("verification.notFound.tryAnother")}
                   </Button>
                 </div>
               )}

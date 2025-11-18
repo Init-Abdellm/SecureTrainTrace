@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, XCircle, Clock } from "lucide-react";
 
@@ -7,19 +8,21 @@ interface StatusBadgeProps {
 }
 
 export function StatusBadge({ status, showIcon = true }: StatusBadgeProps) {
+  const { t } = useTranslation();
+  
   const config = {
     pending: {
-      label: "Pending",
+      label: t("status.pending"),
       className: "bg-muted text-muted-foreground border-muted-border",
       icon: Clock,
     },
     passed: {
-      label: "Passed",
+      label: t("status.passed"),
       className: "bg-chart-2/10 text-chart-2 border-chart-2/20",
       icon: CheckCircle2,
     },
     failed: {
-      label: "Failed",
+      label: t("status.failed"),
       className: "bg-destructive/10 text-destructive border-destructive/20",
       icon: XCircle,
     },

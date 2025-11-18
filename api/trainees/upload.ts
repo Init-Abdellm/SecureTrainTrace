@@ -18,7 +18,7 @@ export default async function handler(
   res: VercelResponse
 ) {
   const cookieHeader = req.headers.cookie || null;
-  
+
   if (!isAuthenticated(cookieHeader)) {
     return res.status(401).json({ message: "Unauthorized" });
   }
@@ -32,7 +32,7 @@ export default async function handler(
     const form = new multiparty.Form({
       uploadDir: join(tmpdir(), "vercel-uploads"),
     });
-    
+
     const { fields, files } = await new Promise<{ fields: any; files: any }>((resolve, reject) => {
       form.parse(req, (err, fields, files) => {
         if (err) reject(err);

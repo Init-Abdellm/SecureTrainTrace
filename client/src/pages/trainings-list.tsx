@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -14,6 +15,7 @@ import type { Training, Trainee } from "@shared/schema";
 import { format } from "date-fns";
 
 export default function TrainingsList() {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -22,15 +24,15 @@ export default function TrainingsList() {
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
       toast({
-        title: "Unauthorized",
-        description: "You are logged out. Logging in again...",
+        title: t("common.unauthorized"),
+        description: t("login.loggedOut"),
         variant: "destructive",
       });
       setTimeout(() => {
         window.location.href = "/api/login";
       }, 500);
     }
-  }, [isAuthenticated, authLoading, toast]);
+  }, [isAuthenticated, authLoading, toast, t]);
 
   const { data: trainings, isLoading } = useQuery<Training[]>({
     queryKey: ["/api/trainings"],
@@ -50,8 +52,8 @@ export default function TrainingsList() {
       queryClient.invalidateQueries({ queryKey: ["/api/trainings"] });
       queryClient.invalidateQueries({ queryKey: ["/api/trainees"] });
       toast({
-        title: "Success",
-        description: "Training deleted successfully",
+        title: t("common.success"),
+        description: t("trainings.deleteSuccess"),
       });
       setDeleteDialogOpen(false);
       setTrainingToDelete(null);
@@ -59,8 +61,8 @@ export default function TrainingsList() {
     onError: (error: Error) => {
       if (isUnauthorizedError(error)) {
         toast({
-          title: "Unauthorized",
-          description: "You are logged out. Logging in again...",
+          title: t("common.unauthorized"),
+          description: t("login.loggedOut"),
           variant: "destructive",
         });
         setTimeout(() => {
@@ -69,8 +71,8 @@ export default function TrainingsList() {
         return;
       }
       toast({
-        title: "Error",
-        description: "Failed to delete training",
+        title: t("common.error"),
+        description: t("trainings.deleteError"),
         variant: "destructive",
       });
     },
@@ -103,13 +105,13 @@ export default function TrainingsList() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Training Programs</h1>
-          <p className="text-muted-foreground mt-1">Manage your security training programs</p>
+          <h1 className="text-3xl font-bold text-foreground">{t("trainings.title")}</h1>
+          <p className="text-muted-foreground mt-1">{t("trainings.subtitle")}</p>
         </div>
         <Link href="/admin/trainings/new">
           <Button data-testid="button-new-training">
             <Plus className="w-4 h-4 mr-2" />
-            New Training
+            {t("trainings.newTraining")}
           </Button>
         </Link>
       </div>
@@ -122,14 +124,14 @@ export default function TrainingsList() {
                 <Users className="w-8 h-8 text-muted-foreground" />
               </div>
             </div>
-            <h3 className="text-lg font-semibold mb-2">No trainings yet</h3>
+            <h3 className="text-lg font-semibold mb-2">{t("trainings.noTrainings")}</h3>
             <p className="text-sm text-muted-foreground mb-6">
-              Get started by creating your first training program
+              {t("trainings.noTrainingsDescription")}
             </p>
             <Link href="/admin/trainings/new">
               <Button data-testid="button-create-first-training">
                 <Plus className="w-4 h-4 mr-2" />
-                Create Training
+                {t("trainings.createTraining")}
               </Button>
             </Link>
           </CardContent>
@@ -147,14 +149,14 @@ export default function TrainingsList() {
                 <CardHeader>
                   <CardTitle className="text-lg">{training.name}</CardTitle>
                   <p className="text-sm text-muted-foreground line-clamp-2">
-                    {training.description || "No description"}
+                    {training.description || t("common.noDescription")}
                   </p>
                 </CardHeader>
                 <CardContent className="flex-1">
                   <div className="space-y-3">
                     <div className="flex items-center text-sm text-muted-foreground">
                       <Calendar className="w-4 h-4 mr-2" />
-                      {training.date ? format(new Date(training.date), "MMM dd, yyyy") : "No date"}
+                      {training.date ? format(new Date(training.date), "MMM dd, yyyy") : t("common.noDate")}
                     </div>
                     {training.duration && (
                       <div className="flex items-center text-sm text-muted-foreground">
@@ -164,13 +166,13 @@ export default function TrainingsList() {
                     )}
                     <div className="flex items-center text-sm text-muted-foreground">
                       <Users className="w-4 h-4 mr-2" />
-                      {stats.total} trainees
+                      {stats.total} {t("trainings.trainees")}
                     </div>
                     
                     {stats.total > 0 && (
                       <div className="pt-2">
                         <div className="flex justify-between text-xs text-muted-foreground mb-2">
-                          <span>Pass Rate</span>
+                          <span>{t("trainings.passRate")}</span>
                           <span className="font-medium">{passRate}%</span>
                         </div>
                         <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
@@ -180,9 +182,9 @@ export default function TrainingsList() {
                           />
                         </div>
                         <div className="flex gap-4 mt-2 text-xs">
-                          <span className="text-chart-2">Passed: {stats.passed}</span>
-                          <span className="text-destructive">Failed: {stats.failed}</span>
-                          <span className="text-muted-foreground">Pending: {stats.pending}</span>
+                          <span className="text-chart-2">{t("trainings.passed")}: {stats.passed}</span>
+                          <span className="text-destructive">{t("trainings.failed")}: {stats.failed}</span>
+                          <span className="text-muted-foreground">{t("trainings.pending")}: {stats.pending}</span>
                         </div>
                       </div>
                     )}
@@ -191,7 +193,7 @@ export default function TrainingsList() {
                 <CardFooter className="flex gap-2">
                   <Link href={`/admin/trainings/${training.id}`} className="flex-1">
                     <Button variant="default" className="w-full" data-testid={`button-view-training-${training.id}`}>
-                      View Details
+                      {t("trainings.viewDetails")}
                     </Button>
                   </Link>
                   <Link href={`/admin/trainings/${training.id}/edit`}>
@@ -220,19 +222,19 @@ export default function TrainingsList() {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Training</AlertDialogTitle>
+            <AlertDialogTitle>{t("trainings.deleteTraining")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete "{trainingToDelete?.name}"? This will also delete all associated trainees and their certificates. This action cannot be undone.
+              {t("trainings.deleteConfirm", { name: trainingToDelete?.name })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel data-testid="button-cancel-delete">Cancel</AlertDialogCancel>
+            <AlertDialogCancel data-testid="button-cancel-delete">{t("common.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => trainingToDelete && deleteMutation.mutate(trainingToDelete.id)}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               data-testid="button-confirm-delete"
             >
-              Delete
+              {t("common.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

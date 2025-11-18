@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -18,6 +19,7 @@ import type { Training, Trainee } from "@shared/schema";
 import { format } from "date-fns";
 
 export default function TrainingDetail() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [, navigate] = useLocation();
   const { toast } = useToast();
@@ -33,15 +35,15 @@ export default function TrainingDetail() {
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
       toast({
-        title: "Unauthorized",
-        description: "You are logged out. Logging in again...",
+        title: t("common.unauthorized"),
+        description: t("login.loggedOut"),
         variant: "destructive",
       });
       setTimeout(() => {
         window.location.href = "/api/login";
       }, 500);
     }
-  }, [isAuthenticated, authLoading, toast]);
+  }, [isAuthenticated, authLoading, toast, t]);
 
   const { data: training, isLoading: trainingLoading } = useQuery<Training>({
     queryKey: ["/api/trainings", id],
@@ -49,7 +51,16 @@ export default function TrainingDetail() {
   });
 
   const { data: trainees, isLoading: traineesLoading } = useQuery<Trainee[]>({
-    queryKey: ["/api/trainees/by-training?trainingId=" + id],
+    queryKey: ["/api/trainings", id, "trainees"],
+    queryFn: async () => {
+      const response = await fetch(`/api/trainings/${id}/trainees`, {
+        credentials: "include",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch trainees");
+      }
+      return response.json();
+    },
     enabled: isAuthenticated && !!id,
   });
 
@@ -58,11 +69,11 @@ export default function TrainingDetail() {
       await apiRequest("DELETE", `/api/trainees/${traineeId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/trainees/by-training?trainingId=" + id] });
+      queryClient.invalidateQueries({ queryKey: ["/api/trainings", id, "trainees"] });
       queryClient.invalidateQueries({ queryKey: ["/api/trainees"] });
       toast({
-        title: "Success",
-        description: "Trainee deleted successfully",
+        title: t("common.success"),
+        description: t("trainingDetail.deleteTraineeSuccess"),
       });
       setDeleteDialogOpen(false);
       setTraineeToDelete(null);
@@ -70,8 +81,8 @@ export default function TrainingDetail() {
     onError: (error: Error) => {
       if (isUnauthorizedError(error)) {
         toast({
-          title: "Unauthorized",
-          description: "You are logged out. Logging in again...",
+          title: t("common.unauthorized"),
+          description: t("login.loggedOut"),
           variant: "destructive",
         });
         setTimeout(() => {
@@ -80,8 +91,8 @@ export default function TrainingDetail() {
         return;
       }
       toast({
-        title: "Error",
-        description: "Failed to delete trainee",
+        title: t("common.error"),
+        description: t("trainingDetail.deleteTraineeError"),
         variant: "destructive",
       });
     },
@@ -92,11 +103,11 @@ export default function TrainingDetail() {
       await apiRequest("PATCH", `/api/trainees/${traineeId}`, { status });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/trainees/by-training?trainingId=" + id] });
+      queryClient.invalidateQueries({ queryKey: ["/api/trainings", id, "trainees"] });
       queryClient.invalidateQueries({ queryKey: ["/api/trainees"] });
       toast({
-        title: "Success",
-        description: "Trainee status updated successfully",
+        title: t("common.success"),
+        description: t("trainingDetail.updateStatusSuccess"),
       });
       setStatusUpdateDialogOpen(false);
       setTraineeToUpdate(null);
@@ -104,8 +115,8 @@ export default function TrainingDetail() {
     onError: (error: Error) => {
       if (isUnauthorizedError(error)) {
         toast({
-          title: "Unauthorized",
-          description: "You are logged out. Logging in again...",
+          title: t("common.unauthorized"),
+          description: t("login.loggedOut"),
           variant: "destructive",
         });
         setTimeout(() => {
@@ -114,8 +125,8 @@ export default function TrainingDetail() {
         return;
       }
       toast({
-        title: "Error",
-        description: "Failed to update trainee status",
+        title: t("common.error"),
+        description: t("trainingDetail.updateStatusError"),
         variant: "destructive",
       });
     },
@@ -124,7 +135,7 @@ export default function TrainingDetail() {
   const exportToCSV = () => {
     if (!trainees || !training) return;
 
-    const headers = ["Name", "Surname", "Email", "Phone", "Company", "Status", "Certificate ID"];
+    const headers = [t("common.name"), t("traineeForm.lastName"), t("common.email"), t("common.phone"), t("common.company"), t("common.status"), t("verification.verified.certificateId")];
     const rows = filteredTrainees.map(t => [
       t.name,
       t.surname,
@@ -163,8 +174,8 @@ export default function TrainingDetail() {
       <div className="p-8">
         <Card>
           <CardContent className="py-12 text-center">
-            <h3 className="text-lg font-semibold mb-2">Training not found</h3>
-            <Button onClick={() => navigate("/trainings")}>Back to Trainings</Button>
+            <h3 className="text-lg font-semibold mb-2">{t("trainingDetail.trainingNotFound")}</h3>
+            <Button onClick={() => navigate("/admin/trainings")}>{t("trainingDetail.backToTrainings")}</Button>
           </CardContent>
         </Card>
       </div>
@@ -196,24 +207,24 @@ export default function TrainingDetail() {
         <Link href="/admin/trainings">
           <Button variant="ghost" className="mb-4" data-testid="button-back">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Trainings
+            {t("trainingDetail.backToTrainings")}
           </Button>
         </Link>
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-3xl font-bold text-foreground">{training.name}</h1>
-            <p className="text-muted-foreground mt-1">{training.description || "No description"}</p>
+            <p className="text-muted-foreground mt-1">{training.description || t("common.noDescription")}</p>
             <div className="flex gap-6 mt-4 text-sm text-muted-foreground">
               {training.date && (
-                <span>Date: {format(new Date(training.date), "MMM dd, yyyy")}</span>
+                <span>{t("common.date")}: {format(new Date(training.date), "MMM dd, yyyy")}</span>
               )}
-              {training.duration && <span>Duration: {training.duration}</span>}
+              {training.duration && <span>{t("common.duration")}: {training.duration}</span>}
             </div>
           </div>
           <Link href={`/admin/trainings/${id}/upload`}>
             <Button data-testid="button-upload-excel">
               <Upload className="w-4 h-4 mr-2" />
-              Upload Excel
+              {t("trainingDetail.uploadExcel")}
             </Button>
           </Link>
         </div>
@@ -222,25 +233,25 @@ export default function TrainingDetail() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <Card>
           <CardContent className="p-6">
-            <p className="text-sm font-medium text-muted-foreground mb-1">Total Trainees</p>
+            <p className="text-sm font-medium text-muted-foreground mb-1">{t("trainingDetail.totalTrainees")}</p>
             <p className="text-2xl font-bold">{stats.total}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6">
-            <p className="text-sm font-medium text-muted-foreground mb-1">Passed</p>
+            <p className="text-sm font-medium text-muted-foreground mb-1">{t("trainingDetail.passed")}</p>
             <p className="text-2xl font-bold text-chart-2">{stats.passed}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6">
-            <p className="text-sm font-medium text-muted-foreground mb-1">Failed</p>
+            <p className="text-sm font-medium text-muted-foreground mb-1">{t("trainingDetail.failed")}</p>
             <p className="text-2xl font-bold text-destructive">{stats.failed}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6">
-            <p className="text-sm font-medium text-muted-foreground mb-1">Pending</p>
+            <p className="text-sm font-medium text-muted-foreground mb-1">{t("trainingDetail.pending")}</p>
             <p className="text-2xl font-bold text-muted-foreground">{stats.pending}</p>
           </CardContent>
         </Card>
@@ -249,12 +260,12 @@ export default function TrainingDetail() {
       <Card>
         <CardHeader>
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <CardTitle>Trainees</CardTitle>
+            <CardTitle>{t("trainingDetail.trainees")}</CardTitle>
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="relative flex-1 sm:w-64">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search trainees..."
+                  placeholder={t("trainingDetail.searchTrainees")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-9"
@@ -263,18 +274,18 @@ export default function TrainingDetail() {
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger className="w-full sm:w-40" data-testid="select-status-filter">
-                  <SelectValue placeholder="Filter by status" />
+                  <SelectValue placeholder={t("trainingDetail.filterByStatus")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="passed">Passed</SelectItem>
-                  <SelectItem value="failed">Failed</SelectItem>
+                  <SelectItem value="all">{t("trainingDetail.allStatus")}</SelectItem>
+                  <SelectItem value="pending">{t("status.pending")}</SelectItem>
+                  <SelectItem value="passed">{t("status.passed")}</SelectItem>
+                  <SelectItem value="failed">{t("status.failed")}</SelectItem>
                 </SelectContent>
               </Select>
               <Button variant="outline" onClick={exportToCSV} data-testid="button-export-csv">
                 <FileDown className="w-4 h-4 mr-2" />
-                Export CSV
+                {t("trainingDetail.exportCsv")}
               </Button>
             </div>
           </div>
@@ -284,14 +295,14 @@ export default function TrainingDetail() {
             <div className="text-center py-12">
               <p className="text-muted-foreground mb-4">
                 {trainees && trainees.length > 0
-                  ? "No trainees match your search"
-                  : "No trainees yet"}
+                  ? t("trainingDetail.noTraineesMatch")
+                  : t("trainingDetail.noTraineesYet")}
               </p>
               {!trainees || trainees.length === 0 ? (
                 <Link href={`/admin/trainings/${id}/upload`}>
                   <Button data-testid="button-upload-first">
                     <Upload className="w-4 h-4 mr-2" />
-                    Upload Trainees
+                    {t("trainingDetail.uploadTrainees")}
                   </Button>
                 </Link>
               ) : null}
@@ -301,11 +312,11 @@ export default function TrainingDetail() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Company</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead>{t("common.name")}</TableHead>
+                    <TableHead>{t("common.email")}</TableHead>
+                    <TableHead>{t("common.company")}</TableHead>
+                    <TableHead>{t("common.status")}</TableHead>
+                    <TableHead className="text-right">{t("common.actions")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -377,19 +388,19 @@ export default function TrainingDetail() {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Trainee</AlertDialogTitle>
+            <AlertDialogTitle>{t("trainingDetail.deleteTrainee")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete {traineeToDelete?.name} {traineeToDelete?.surname}? This action cannot be undone.
+              {t("trainingDetail.deleteTraineeConfirm", { name: traineeToDelete?.name, surname: traineeToDelete?.surname })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel data-testid="button-cancel-delete">Cancel</AlertDialogCancel>
+            <AlertDialogCancel data-testid="button-cancel-delete">{t("common.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => traineeToDelete && deleteTraineeMutation.mutate(traineeToDelete.id)}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               data-testid="button-confirm-delete"
             >
-              Delete
+              {t("common.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -398,9 +409,9 @@ export default function TrainingDetail() {
       <AlertDialog open={statusUpdateDialogOpen} onOpenChange={setStatusUpdateDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Update Status</AlertDialogTitle>
+            <AlertDialogTitle>{t("trainingDetail.updateStatus")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Update the status for {traineeToUpdate?.name} {traineeToUpdate?.surname}
+              {t("trainingDetail.updateStatusDescription", { name: traineeToUpdate?.name, surname: traineeToUpdate?.surname })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <div className="py-4">
@@ -409,14 +420,14 @@ export default function TrainingDetail() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="passed">Passed</SelectItem>
-                <SelectItem value="failed">Failed</SelectItem>
+                <SelectItem value="pending">{t("status.pending")}</SelectItem>
+                <SelectItem value="passed">{t("status.passed")}</SelectItem>
+                <SelectItem value="failed">{t("status.failed")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <AlertDialogFooter>
-            <AlertDialogCancel data-testid="button-cancel-status">Cancel</AlertDialogCancel>
+            <AlertDialogCancel data-testid="button-cancel-status">{t("common.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => traineeToUpdate && updateStatusMutation.mutate({
                 traineeId: traineeToUpdate.id,
@@ -424,7 +435,7 @@ export default function TrainingDetail() {
               })}
               data-testid="button-confirm-status"
             >
-              Update Status
+              {t("trainingDetail.updateStatus")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

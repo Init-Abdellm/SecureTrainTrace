@@ -1,0 +1,326 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "back": "Retour",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "update": "Mettre à jour",
+    "submit": "Soumettre",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "export": "Exporter",
+    "download": "Télécharger",
+    "upload": "Téléverser",
+    "view": "Voir",
+    "actions": "Actions",
+    "name": "Nom",
+    "email": "Email",
+    "phone": "Téléphone",
+    "company": "Entreprise",
+    "status": "Statut",
+    "date": "Date",
+    "duration": "Durée",
+    "description": "Description",
+    "all": "Tous",
+    "yes": "Oui",
+    "no": "Non",
+    "success": "Succès",
+    "error": "Erreur",
+    "unauthorized": "Non autorisé",
+    "saving": "Enregistrement...",
+    "noDescription": "Aucune description",
+    "noDate": "Aucune date"
+  },
+  "nav": {
+    "adminLogin": "Connexion Admin",
+    "backToHome": "Retour à l'accueil",
+    "constructionSiteSafety": "Sécurité des Chantiers"
+  },
+  "sidebar": {
+    "dashboard": "Tableau de bord",
+    "trainings": "Formations",
+    "analytics": "Analyses",
+    "trainingPlatform": "Plateforme de Formation",
+    "administrator": "Administrateur",
+    "systemAdmin": "Admin Système"
+  },
+  "landing": {
+    "title": "Formation et Certification en Sécurité des Chantiers",
+    "subtitle": "Gérez les programmes de formation, suivez la progression des stagiaires, émettez des certificats numériques et permettez la vérification instantanée pour la conformité à la sécurité des chantiers.",
+    "verifyCertificate": "Vérifier le Certificat",
+    "howItWorks": "Comment ça fonctionne",
+    "howItWorksSubtitle": "Un flux de travail complet pour gérer la formation à la sécurité des chantiers de l'inscription à la certification",
+    "step1": {
+      "title": "Téléverser les Stagiaires",
+      "description": "Importez les données des stagiaires via Excel. Téléversement en masse avec validation automatique et création de profils."
+    },
+    "step2": {
+      "title": "Conduire la Formation",
+      "description": "Délivrez des programmes de formation à la sécurité. Suivez la présence et la participation pour chaque session."
+    },
+    "step3": {
+      "title": "Mettre à jour le Statut",
+      "description": "Marquez les stagiaires comme réussis ou échoués. Le système suit automatiquement la progression et l'achèvement."
+    },
+    "step4": {
+      "title": "Émettre les Certificats",
+      "description": "Générez des certificats PDF professionnels avec des identifiants uniques et des codes QR pour vérification."
+    },
+    "features": {
+      "title": "Fonctionnalités de la Plateforme",
+      "subtitle": "Tout ce dont vous avez besoin pour gérer la formation à la sécurité et les certifications",
+      "bulkImport": {
+        "title": "Import en Masse",
+        "description": "Téléversez des listes de stagiaires via des fichiers Excel. La validation automatique garantit la précision des données avant l'importation."
+      },
+      "statusTracking": {
+        "title": "Suivi des Statuts",
+        "description": "Suivi en temps réel de la progression des stagiaires. Gérez efficacement les statuts en attente, réussis et échoués."
+      },
+      "digitalCertificates": {
+        "title": "Certificats Numériques",
+        "description": "Générez automatiquement des certificats PDF professionnels avec des identifiants uniques et des codes QR."
+      },
+      "qrVerification": {
+        "title": "Vérification QR",
+        "description": "Chaque certificat inclut un code QR scannable pour une vérification publique instantanée de l'authenticité."
+      },
+      "secureAccess": {
+        "title": "Accès Sécurisé",
+        "description": "Contrôle d'accès basé sur les rôles. Les outils d'administration sont protégés tandis que la vérification reste publique."
+      },
+      "trainingHistory": {
+        "title": "Historique des Formations",
+        "description": "Piste d'audit complète de toutes les sessions de formation, dossiers de présence et émission de certificats."
+      }
+    },
+    "safetyCompliance": {
+      "title": "Conformité Sécuritaire Simplifiée",
+      "description": "Notre plateforme garantit que votre chantier répond à toutes les exigences de formation à la sécurité. Suivez les certifications, maintenez les dossiers de conformité et fournissez une preuve instantanée de formation aux inspecteurs et aux parties prenantes.",
+      "point1": "Programmes de formation à la sécurité conformes aux normes de l'industrie",
+      "point2": "Génération et distribution automatiques de certificats",
+      "point3": "Vérification publique sans exigence de connexion"
+    },
+    "verifyCta": {
+      "title": "Vérifier un Certificat",
+      "description": "Tout le monde peut vérifier l'authenticité d'un certificat en scannant le code QR ou en entrant l'ID du certificat. Aucune connexion requise.",
+      "verifyNow": "Vérifier Maintenant"
+    },
+    "footer": {
+      "copyright": "Tous droits réservés."
+    }
+  },
+  "login": {
+    "title": "Portail Admin",
+    "subtitle": "Sécurité des Chantiers",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "usernamePlaceholder": "Entrez votre nom d'utilisateur",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "login": "Se connecter",
+    "loggingIn": "Connexion en cours...",
+    "loggedOut": "Vous êtes déconnecté. Reconnexion en cours..."
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "subtitle": "Vue d'ensemble de vos programmes de formation et de la performance des stagiaires",
+    "totalTrainings": "Total des Formations",
+    "totalTrainees": "Total des Stagiaires",
+    "certificatesIssued": "Certificats Émis",
+    "passRate": "Taux de Réussite",
+    "recentActivity": "Activité Récente",
+    "recentActivityDescription": "Consultez les informations détaillées sur les formations et gérez les stagiaires depuis la page Formations."
+  },
+  "trainings": {
+    "title": "Programmes de Formation",
+    "subtitle": "Gérez vos programmes de formation à la sécurité",
+    "newTraining": "Nouvelle Formation",
+    "noTrainings": "Aucune formation pour le moment",
+    "noTrainingsDescription": "Commencez par créer votre premier programme de formation",
+    "createTraining": "Créer une Formation",
+    "trainees": "stagiaires",
+    "passRate": "Taux de Réussite",
+    "passed": "Réussi",
+    "failed": "Échoué",
+    "pending": "En attente",
+    "viewDetails": "Voir les Détails",
+    "deleteTraining": "Supprimer la Formation",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer \"{{name}}\" ? Cela supprimera également tous les stagiaires associés et leurs certificats. Cette action ne peut pas être annulée.",
+    "deleteSuccess": "Formation supprimée avec succès",
+    "deleteError": "Échec de la suppression de la formation"
+  },
+  "trainingForm": {
+    "createTitle": "Créer une Formation",
+    "editTitle": "Modifier la Formation",
+    "trainingName": "Nom de la Formation *",
+    "trainingNamePlaceholder": "ex. : Conformité Sécurité Bâtiment",
+    "descriptionPlaceholder": "Décrivez le programme de formation...",
+    "trainingDate": "Date de Formation *",
+    "durationPlaceholder": "ex. : 4 heures",
+    "durationUnit": {
+      "placeholder": "Sélectionner l'unité",
+      "hour": "heures",
+      "day": "jours",
+      "month": "mois"
+    },
+    "createTraining": "Créer la Formation",
+    "updateTraining": "Mettre à jour la Formation",
+    "createSuccess": "Formation créée avec succès",
+    "updateSuccess": "Formation mise à jour avec succès",
+    "createError": "Échec de la création de la formation",
+    "updateError": "Échec de la mise à jour de la formation"
+  },
+  "trainingDetail": {
+    "backToTrainings": "Retour aux Formations",
+    "uploadExcel": "Téléverser Excel",
+    "totalTrainees": "Total des Stagiaires",
+    "passed": "Réussi",
+    "failed": "Échoué",
+    "pending": "En attente",
+    "trainees": "Stagiaires",
+    "searchTrainees": "Rechercher des stagiaires...",
+    "filterByStatus": "Filtrer par statut",
+    "allStatus": "Tous les Statuts",
+    "exportCsv": "Exporter CSV",
+    "noTraineesMatch": "Aucun stagiaire ne correspond à votre recherche",
+    "noTraineesYet": "Aucun stagiaire pour le moment",
+    "uploadTrainees": "Téléverser des Stagiaires",
+    "updateStatus": "Mettre à jour le Statut",
+    "updateStatusDescription": "Mettre à jour le statut pour {{name}} {{surname}}",
+    "updateStatusSuccess": "Statut du stagiaire mis à jour avec succès",
+    "updateStatusError": "Échec de la mise à jour du statut du stagiaire",
+    "deleteTrainee": "Supprimer le Stagiaire",
+    "deleteTraineeConfirm": "Êtes-vous sûr de vouloir supprimer {{name}} {{surname}} ? Cette action ne peut pas être annulée.",
+    "deleteTraineeSuccess": "Stagiaire supprimé avec succès",
+    "deleteTraineeError": "Échec de la suppression du stagiaire",
+    "trainingNotFound": "Formation introuvable"
+  },
+  "traineeForm": {
+    "createTitle": "Créer un Stagiaire",
+    "editTitle": "Modifier le Stagiaire",
+    "firstName": "Prénom *",
+    "lastName": "Nom *",
+    "email": "Email *",
+    "phoneNumber": "Numéro de Téléphone *",
+    "companyName": "Nom de l'Entreprise",
+    "trainingDate": "Date de Formation *",
+    "status": "Statut",
+    "createSuccess": "Stagiaire créé avec succès",
+    "updateSuccess": "Stagiaire mis à jour avec succès",
+    "createError": "Échec de la création du stagiaire",
+    "updateError": "Échec de la mise à jour du stagiaire"
+  },
+  "excelUpload": {
+    "title": "Téléverser la Liste des Stagiaires",
+    "subtitle": "Téléversez un fichier Excel contenant les informations des stagiaires pour un import en masse",
+    "backToTraining": "Retour à la Formation",
+    "selectFile": "Sélectionner un Fichier Excel",
+    "upload": "Téléverser le Fichier",
+    "uploading": "Téléversement en cours...",
+    "processing": "Traitement du fichier...",
+    "remove": "Retirer",
+    "browseFiles": "Parcourir les Fichiers",
+    "dropFile": "Déposez un fichier Excel ici ou cliquez pour parcourir",
+    "supportsFiles": "Prend en charge les fichiers .xlsx et .xls",
+    "downloadTemplate": "Télécharger le Modèle",
+    "requiredColumns": "Colonnes Requises",
+    "requiredColumnsDescription": "Votre fichier Excel doit contenir ces colonnes : name, surname, email, phone_number, company_name (optionnel). La date et l'ID de formation seront automatiquement définis à partir de la formation actuelle.",
+    "invalidFile": "Fichier Invalide",
+    "invalidFileDescription": "Veuillez sélectionner un fichier Excel (.xlsx ou .xls)",
+    "uploadComplete": "Téléversement Terminé",
+    "uploadCompletedWithErrors": "Téléversement Terminé avec des Erreurs",
+    "successfullyImported": "Importation réussie : {{count}} stagiaires",
+    "failedCount": "Échec : {{count}} stagiaires",
+    "uploadFailed": "Échec du Téléversement",
+    "noTraineesImported": "Aucun stagiaire n'a été importé. {{count}} échec",
+    "viewTrainees": "Voir les Stagiaires",
+    "successTitle": "Succès",
+    "successDescription": "{{count}} stagiaires importés avec succès",
+    "partiallyCompleteTitle": "Partiellement Terminé",
+    "partiallyCompleteDescription": "{{count}} stagiaires importés, {{failed}} échec",
+    "errorTitle": "Erreur",
+    "errorDescription": "Échec du téléversement du fichier",
+    "instructions": {
+      "title": "Format du Fichier Excel",
+      "description": "Votre fichier Excel doit contenir les colonnes suivantes :",
+      "columns": {
+        "name": "name (requis)",
+        "surname": "surname (requis)",
+        "email": "email (requis)",
+        "phone_number": "phone_number (requis)",
+        "company_name": "company_name (optionnel)"
+      },
+      "note": "La première ligne doit contenir les en-têtes de colonnes. La validation des données sera effectuée automatiquement."
+    },
+    "success": "Fichier téléversé avec succès",
+    "error": "Échec du téléversement du fichier",
+    "imported": "{{count}} stagiaire importé",
+    "imported_plural": "{{count}} stagiaires importés",
+    "failed": "{{count}} échec",
+    "errors": "Erreurs"
+  },
+  "verification": {
+    "title": "Vérifier le Certificat",
+    "subtitle": "Entrez un ID de certificat ou un ID de stagiaire pour vérifier instantanément l'achèvement et l'authenticité de la formation.",
+    "placeholder": "Entrez l'ID du Certificat ou l'ID du Stagiaire",
+    "verify": "Vérifier le Certificat",
+    "verifying": "Vérification du certificat...",
+    "howToVerify": {
+      "title": "Comment vérifier :",
+      "point1": "Scannez le code QR sur le certificat à l'aide de l'appareil photo de votre téléphone",
+      "point2": "Ou entrez manuellement l'ID du Certificat ou l'ID du Stagiaire indiqué sur le certificat",
+      "point3": "Le système vérifiera instantanément si le certificat est valide"
+    },
+    "verified": {
+      "title": "Certificat Vérifié",
+      "subtitle": "Ce certificat est valide et authentique",
+      "training": "Formation",
+      "trainingDate": "Date de Formation",
+      "certificateId": "ID du Certificat",
+      "downloadCertificate": "Télécharger le Certificat",
+      "verifyAnother": "Vérifier un Autre Certificat"
+    },
+    "notFound": {
+      "title": "Certificat Introuvable",
+      "description": "Cet ID de certificat est invalide, ou le certificat n'a pas encore été émis.",
+      "tryAnother": "Essayer un Autre ID"
+    }
+  },
+  "status": {
+    "pending": "En attente",
+    "passed": "Réussi",
+    "failed": "Échoué"
+  },
+  "certificate": {
+    "title": "Certificat d'Achèvement",
+    "certifies": "Ceci certifie que",
+    "hasCompleted": "a terminé avec succès la formation",
+    "on": "le",
+    "certificateId": "ID du Certificat",
+    "issueDate": "Date d'Émission",
+    "scanToVerify": "Scannez le code QR pour vérifier"
+  },
+  "notFound": {
+    "title": "Page Introuvable",
+    "description": "La page que vous recherchez n'existe pas.",
+    "goHome": "Aller à l'Accueil"
+  },
+  "analytics": {
+    "title": "Analyses",
+    "subtitle": "Statistiques et informations sur les formations",
+    "totalTrainees": "Total des Stagiaires",
+    "overallPassRate": "Taux de Réussite Global",
+    "certificatesIssued": "Certificats Émis",
+    "companies": "Entreprises",
+    "statusDistribution": "Répartition des Statuts",
+    "trainingProgramsPerformance": "Performance des Programmes de Formation",
+    "noTrainingData": "Aucune donnée de formation disponible",
+    "passed": "Réussi",
+    "failed": "Échoué",
+    "pending": "En attente"
+  }
+}
+

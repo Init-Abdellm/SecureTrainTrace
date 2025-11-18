@@ -111,7 +111,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch('/api/trainees/:id', isAuthenticated, async (req, res) => {
     try {
       const { status, ...otherFields } = req.body;
-      
+
       // If status is changing to "passed", generate certificate
       if (status === "passed") {
         const trainee = await storage.getTrainee(req.params.id);
@@ -255,16 +255,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/verify/:id', async (req, res) => {
     try {
       let trainee;
-      
+
       // Try to find by trainee ID first
       trainee = await storage.getTrainee(req.params.id);
-      
+
       // If not found and ID looks like a certificate ID, search all trainees
       if (!trainee && req.params.id.startsWith('CERT-')) {
         const allTrainees = await storage.getAllTrainees();
         trainee = allTrainees.find(t => t.certificateId === req.params.id);
       }
-      
+
       if (!trainee || trainee.status !== "passed" || !trainee.certificateId) {
         return res.json({ valid: false });
       }
@@ -321,17 +321,29 @@ async function generateCertificate(
         resolve(dataUrl);
       });
 
+      // Certificate translations - could be extended to support multiple languages
+      // For now, using English. To add i18n, accept language from request header or trainee preference
+      const certTexts = {
+        title: 'Certificate of Completion',
+        certifies: 'This certifies that',
+        hasCompleted: 'has successfully completed the training',
+        on: 'on',
+        certificateId: 'Certificate ID',
+        issueDate: 'Issue Date',
+        scanToVerify: 'Scan QR code to verify'
+      };
+
       // Header
       doc.fontSize(32)
         .font('Helvetica-Bold')
-        .text('Certificate of Completion', { align: 'center' });
+        .text(certTexts.title, { align: 'center' });
 
       doc.moveDown(2);
 
       // Body
       doc.fontSize(16)
         .font('Helvetica')
-        .text('This certifies that', { align: 'center' });
+        .text(certTexts.certifies, { align: 'center' });
 
       doc.moveDown(0.5);
 
@@ -343,7 +355,7 @@ async function generateCertificate(
 
       doc.fontSize(16)
         .font('Helvetica')
-        .text('has successfully completed the training', { align: 'center' });
+        .text(certTexts.hasCompleted, { align: 'center' });
 
       doc.moveDown(0.5);
 
@@ -353,17 +365,19 @@ async function generateCertificate(
 
       doc.moveDown(0.5);
 
+      // Use locale-aware date formatting (could be extended based on language)
+      const dateLocale = 'fr-FR'; // Could be 'fr-FR' for French
       doc.fontSize(14)
         .font('Helvetica')
-        .text(`on ${new Date(trainee.trainingDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, { align: 'center' });
+        .text(`${certTexts.on} ${new Date(trainee.trainingDate).toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' })}`, { align: 'center' });
 
       doc.moveDown(2);
 
       // Generate QR code - use full domain from environment
-      const domain = process.env.APP_DOMAIN || 'localhost:5000';
+      const domain = process.env.APP_DOMAIN || 'localhost:1994';
       const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
       const verificationUrl = `${protocol}://${domain}/verify/${trainee.id}`;
-      
+
       QRCode.toDataURL(verificationUrl, { width: 150 }, (err: Error | null | undefined, url: string) => {
         if (err) {
           console.error('QR Code generation error:', err);
@@ -374,21 +388,22 @@ async function generateCertificate(
         // Add QR code to PDF
         const qrImage = url.split(',')[1];
         const qrBuffer = Buffer.from(qrImage, 'base64');
-        
+
         doc.image(qrBuffer, doc.page.width - 150 - 72, doc.page.height - 150 - 72, {
           width: 120,
           height: 120
         });
 
         // Footer
+        const issueDateLocale = 'en-US'; // Could be 'fr-FR' for French
         doc.fontSize(10)
           .font('Helvetica')
-          .text(`Certificate ID: ${certificateId}`, 72, doc.page.height - 100, { align: 'left' });
+          .text(`${certTexts.certificateId}: ${certificateId}`, 72, doc.page.height - 100, { align: 'left' });
 
-        doc.text(`Issue Date: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, 72, doc.page.height - 80, { align: 'left' });
+        doc.text(`${certTexts.issueDate}: ${new Date().toLocaleDateString(issueDateLocale, { year: 'numeric', month: 'long', day: 'numeric' })}`, 72, doc.page.height - 80, { align: 'left' });
 
         doc.fontSize(8)
-          .text('Scan QR code to verify', doc.page.width - 150 - 72, doc.page.height - 50, {
+          .text(certTexts.scanToVerify, doc.page.width - 150 - 72, doc.page.height - 50, {
             width: 120,
             align: 'center'
           });

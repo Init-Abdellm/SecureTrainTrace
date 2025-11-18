@@ -1,8 +1,11 @@
 import { Link } from "wouter";
+import { useTranslation } from "react-i18next";
 import { HardHat, Shield, QrCode, Upload, CheckCircle, Award, FileText, Users, Clock, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LanguageSelector } from "@/components/language-selector";
 
 export default function Landing() {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -13,14 +16,17 @@ export default function Landing() {
               <div className="w-9 h-9 bg-orange-600 rounded-lg flex items-center justify-center">
                 <HardHat className="w-5 h-5 text-white" strokeWidth={2.5} />
               </div>
-              <span className="text-base font-bold text-gray-900">Construction Site Safety</span>
+              <span className="text-base font-bold text-gray-900">{t("nav.constructionSiteSafety")}</span>
             </div>
-            <Link href="/admin">
-              <Button variant="outline" size="sm" className="border-gray-300 h-9">
-                <Shield className="w-4 h-4 mr-2" />
-                Admin Login
-              </Button>
-            </Link>
+            <div className="flex items-center gap-2">
+              <LanguageSelector />
+              <Link href="/admin">
+                <Button variant="outline" size="sm" className="border-gray-300 h-9">
+                  <Shield className="w-4 h-4 mr-2" />
+                  {t("nav.adminLogin")}
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
@@ -32,18 +38,17 @@ export default function Landing() {
             <div className="space-y-8">
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  Construction Safety Training & Certification
+                  {t("landing.title")}
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed">
-                  Manage training programs, track trainee progress, issue digital certificates, 
-                  and enable instant verification for construction site safety compliance.
+                  {t("landing.subtitle")}
                 </p>
               </div>
               <div>
                 <Link href="/verify">
                   <Button size="lg" className="bg-orange-600 hover:bg-orange-700 h-12 px-8">
                     <QrCode className="w-5 h-5 mr-2" />
-                    Verify Certificate
+                    {t("landing.verifyCertificate")}
                   </Button>
                 </Link>
               </div>
@@ -61,9 +66,9 @@ export default function Landing() {
       <section className="py-24 px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{t("landing.howItWorks")}</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              A complete workflow for managing construction safety training from enrollment to certification
+              {t("landing.howItWorksSubtitle")}
             </p>
           </div>
 
@@ -71,26 +76,26 @@ export default function Landing() {
             <ProcessStep
               number="1"
               icon={<Upload className="w-6 h-6" />}
-              title="Upload Trainees"
-              description="Import trainee data via Excel. Bulk upload with automatic validation and profile creation."
+              title={t("landing.step1.title")}
+              description={t("landing.step1.description")}
             />
             <ProcessStep
               number="2"
               icon={<Users className="w-6 h-6" />}
-              title="Conduct Training"
-              description="Deliver safety training programs. Track attendance and participation for each session."
+              title={t("landing.step2.title")}
+              description={t("landing.step2.description")}
             />
             <ProcessStep
               number="3"
               icon={<CheckCircle className="w-6 h-6" />}
-              title="Update Status"
-              description="Mark trainees as passed or failed. System automatically tracks progress and completion."
+              title={t("landing.step3.title")}
+              description={t("landing.step3.description")}
             />
             <ProcessStep
               number="4"
               icon={<Award className="w-6 h-6" />}
-              title="Issue Certificates"
-              description="Generate professional PDF certificates with unique IDs and QR codes for verification."
+              title={t("landing.step4.title")}
+              description={t("landing.step4.description")}
             />
           </div>
         </div>
@@ -100,40 +105,40 @@ export default function Landing() {
       <section className="py-24 px-6 lg:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Platform Features</h2>
-            <p className="text-xl text-gray-600">Everything you need to manage safety training and certifications</p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{t("landing.features.title")}</h2>
+            <p className="text-xl text-gray-600">{t("landing.features.subtitle")}</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             <FeatureCard
               icon={<FileText className="w-8 h-8 text-orange-600" />}
-              title="Bulk Import"
-              description="Upload trainee lists via Excel files. Automatic validation ensures data accuracy before import."
+              title={t("landing.features.bulkImport.title")}
+              description={t("landing.features.bulkImport.description")}
             />
             <FeatureCard
               icon={<CheckCircle className="w-8 h-8 text-orange-600" />}
-              title="Status Tracking"
-              description="Real-time tracking of trainee progress. Manage pending, passed, and failed statuses efficiently."
+              title={t("landing.features.statusTracking.title")}
+              description={t("landing.features.statusTracking.description")}
             />
             <FeatureCard
               icon={<Award className="w-8 h-8 text-orange-600" />}
-              title="Digital Certificates"
-              description="Automatically generate professional PDF certificates with unique identifiers and QR codes."
+              title={t("landing.features.digitalCertificates.title")}
+              description={t("landing.features.digitalCertificates.description")}
             />
             <FeatureCard
               icon={<QrCode className="w-8 h-8 text-orange-600" />}
-              title="QR Verification"
-              description="Each certificate includes a scannable QR code for instant public verification of authenticity."
+              title={t("landing.features.qrVerification.title")}
+              description={t("landing.features.qrVerification.description")}
             />
             <FeatureCard
               icon={<Lock className="w-8 h-8 text-orange-600" />}
-              title="Secure Access"
-              description="Role-based access control. Admin tools are protected while verification remains public."
+              title={t("landing.features.secureAccess.title")}
+              description={t("landing.features.secureAccess.description")}
             />
             <FeatureCard
               icon={<Clock className="w-8 h-8 text-orange-600" />}
-              title="Training History"
-              description="Complete audit trail of all training sessions, attendance records, and certificate issuance."
+              title={t("landing.features.trainingHistory.title")}
+              description={t("landing.features.trainingHistory.description")}
             />
           </div>
         </div>
@@ -145,31 +150,29 @@ export default function Landing() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-6">
               <h2 className="text-4xl font-bold text-gray-900">
-                Safety Compliance Made Simple
+                {t("landing.safetyCompliance.title")}
               </h2>
               <p className="text-lg text-gray-600 leading-relaxed">
-                Our platform ensures your construction site meets all safety training requirements. 
-                Track certifications, maintain compliance records, and provide instant proof of training 
-                to inspectors and stakeholders.
+                {t("landing.safetyCompliance.description")}
               </p>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                     <CheckCircle className="w-4 h-4 text-green-600" />
                   </div>
-                  <span className="text-gray-700">Industry-standard safety training programs</span>
+                  <span className="text-gray-700">{t("landing.safetyCompliance.point1")}</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                     <CheckCircle className="w-4 h-4 text-green-600" />
                   </div>
-                  <span className="text-gray-700">Automated certificate generation and distribution</span>
+                  <span className="text-gray-700">{t("landing.safetyCompliance.point2")}</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                     <CheckCircle className="w-4 h-4 text-green-600" />
                   </div>
-                  <span className="text-gray-700">Public verification without login requirements</span>
+                  <span className="text-gray-700">{t("landing.safetyCompliance.point3")}</span>
                 </li>
               </ul>
             </div>
@@ -189,16 +192,15 @@ export default function Landing() {
             <QrCode className="w-8 h-8" />
           </div>
           <h2 className="text-4xl lg:text-5xl font-bold">
-            Verify a Certificate
+            {t("landing.verifyCta.title")}
           </h2>
           <p className="text-xl text-orange-50 max-w-2xl mx-auto">
-            Anyone can verify certificate authenticity by scanning the QR code or entering 
-            the certificate ID. No login required.
+            {t("landing.verifyCta.description")}
           </p>
           <Link href="/verify">
             <Button size="lg" className="bg-white text-orange-600 hover:bg-orange-50 h-14 px-8 text-lg font-semibold">
               <QrCode className="w-5 h-5 mr-2" />
-              Verify Now
+              {t("landing.verifyCta.verifyNow")}
             </Button>
           </Link>
         </div>
@@ -212,10 +214,10 @@ export default function Landing() {
               <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center">
                 <HardHat className="w-5 h-5 text-white" strokeWidth={2.5} />
               </div>
-              <span className="text-sm font-semibold text-gray-900">Construction Site Safety</span>
+              <span className="text-sm font-semibold text-gray-900">{t("nav.constructionSiteSafety")}</span>
             </div>
             <p className="text-sm text-gray-500">
-              © {new Date().getFullYear()} All rights reserved.
+              © {new Date().getFullYear()} {t("landing.footer.copyright")}
             </p>
           </div>
         </div>

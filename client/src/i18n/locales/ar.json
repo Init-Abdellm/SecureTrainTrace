@@ -1,0 +1,326 @@
+{
+  "common": {
+    "loading": "جاري التحميل...",
+    "back": "رجوع",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "submit": "إرسال",
+    "search": "بحث",
+    "filter": "تصفية",
+    "export": "تصدير",
+    "download": "تحميل",
+    "upload": "رفع",
+    "view": "عرض",
+    "actions": "الإجراءات",
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "company": "الشركة",
+    "status": "الحالة",
+    "date": "التاريخ",
+    "duration": "المدة",
+    "description": "الوصف",
+    "all": "الكل",
+    "yes": "نعم",
+    "no": "لا",
+    "success": "نجح",
+    "error": "خطأ",
+    "unauthorized": "غير مصرح",
+    "saving": "جاري الحفظ...",
+    "noDescription": "لا يوجد وصف",
+    "noDate": "لا يوجد تاريخ"
+  },
+  "nav": {
+    "adminLogin": "تسجيل دخول المدير",
+    "backToHome": "العودة إلى الصفحة الرئيسية",
+    "constructionSiteSafety": "سلامة موقع البناء"
+  },
+  "sidebar": {
+    "dashboard": "لوحة التحكم",
+    "trainings": "التدريبات",
+    "analytics": "التحليلات",
+    "trainingPlatform": "منصة التدريب",
+    "administrator": "المدير",
+    "systemAdmin": "مدير النظام"
+  },
+  "landing": {
+    "title": "تدريب وتصديق سلامة البناء",
+    "subtitle": "إدارة برامج التدريب، تتبع تقدم المتدربين، إصدار شهادات رقمية، وتمكين التحقق الفوري للامتثال لسلامة موقع البناء.",
+    "verifyCertificate": "التحقق من الشهادة",
+    "howItWorks": "كيف يعمل",
+    "howItWorksSubtitle": "سير عمل كامل لإدارة تدريب سلامة البناء من التسجيل إلى التصديق",
+    "step1": {
+      "title": "رفع المتدربين",
+      "description": "استيراد بيانات المتدربين عبر Excel. رفع مجمع مع التحقق التلقائي وإنشاء الملف الشخصي."
+    },
+    "step2": {
+      "title": "إجراء التدريب",
+      "description": "تقديم برامج تدريب السلامة. تتبع الحضور والمشاركة لكل جلسة."
+    },
+    "step3": {
+      "title": "تحديث الحالة",
+      "description": "وضع علامة على المتدربين كنجح أو فشل. يتتبع النظام تلقائياً التقدم والإنجاز."
+    },
+    "step4": {
+      "title": "إصدار الشهادات",
+      "description": "إنشاء شهادات PDF احترافية مع معرفات فريدة ورموز QR للتحقق."
+    },
+    "features": {
+      "title": "ميزات المنصة",
+      "subtitle": "كل ما تحتاجه لإدارة تدريب السلامة والتصديقات",
+      "bulkImport": {
+        "title": "الاستيراد المجمع",
+        "description": "رفع قوائم المتدربين عبر ملفات Excel. يضمن التحقق التلقائي دقة البيانات قبل الاستيراد."
+      },
+      "statusTracking": {
+        "title": "تتبع الحالة",
+        "description": "تتبع في الوقت الفعلي لتقدم المتدربين. إدارة حالات الانتظار والنجاح والفشل بكفاءة."
+      },
+      "digitalCertificates": {
+        "title": "الشهادات الرقمية",
+        "description": "إنشاء تلقائي لشهادات PDF احترافية مع معرفات فريدة ورموز QR."
+      },
+      "qrVerification": {
+        "title": "التحقق QR",
+        "description": "تتضمن كل شهادة رمز QR قابل للمسح للتحقق العام الفوري من الأصالة."
+      },
+      "secureAccess": {
+        "title": "الوصول الآمن",
+        "description": "التحكم في الوصول القائم على الأدوار. أدوات الإدارة محمية بينما يبقى التحقق عاماً."
+      },
+      "trainingHistory": {
+        "title": "تاريخ التدريب",
+        "description": "مسار تدقيق كامل لجميع جلسات التدريب وسجلات الحضور وإصدار الشهادات."
+      }
+    },
+    "safetyCompliance": {
+      "title": "الامتثال للسلامة مبسط",
+      "description": "تضمن منصتنا أن موقع البناء الخاص بك يلبي جميع متطلبات تدريب السلامة. تتبع التصديقات، والحفاظ على سجلات الامتثال، وتقديم دليل فوري على التدريب للمفتشين وأصحاب المصلحة.",
+      "point1": "برامج تدريب السلامة وفقاً لمعايير الصناعة",
+      "point2": "إنشاء وتوزيع الشهادات التلقائي",
+      "point3": "التحقق العام دون متطلبات تسجيل الدخول"
+    },
+    "verifyCta": {
+      "title": "التحقق من الشهادة",
+      "description": "يمكن لأي شخص التحقق من أصالة الشهادة عن طريق مسح رمز QR أو إدخال معرف الشهادة. لا حاجة لتسجيل الدخول.",
+      "verifyNow": "تحقق الآن"
+    },
+    "footer": {
+      "copyright": "جميع الحقوق محفوظة."
+    }
+  },
+  "login": {
+    "title": "بوابة المدير",
+    "subtitle": "سلامة موقع البناء",
+    "username": "اسم المستخدم",
+    "password": "كلمة المرور",
+    "usernamePlaceholder": "أدخل اسم المستخدم",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "login": "تسجيل الدخول",
+    "loggingIn": "جاري تسجيل الدخول...",
+    "loggedOut": "تم تسجيل خروجك. جاري تسجيل الدخول مرة أخرى..."
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "subtitle": "نظرة عامة على برامج التدريب وأداء المتدربين",
+    "totalTrainings": "إجمالي التدريبات",
+    "totalTrainees": "إجمالي المتدربين",
+    "certificatesIssued": "الشهادات الصادرة",
+    "passRate": "معدل النجاح",
+    "recentActivity": "النشاط الأخير",
+    "recentActivityDescription": "عرض معلومات التدريب التفصيلية وإدارة المتدربين من صفحة التدريبات."
+  },
+  "trainings": {
+    "title": "برامج التدريب",
+    "subtitle": "إدارة برامج تدريب السلامة الخاصة بك",
+    "newTraining": "تدريب جديد",
+    "noTrainings": "لا توجد تدريبات بعد",
+    "noTrainingsDescription": "ابدأ بإنشاء برنامج التدريب الأول الخاص بك",
+    "createTraining": "إنشاء تدريب",
+    "trainees": "متدربين",
+    "passRate": "معدل النجاح",
+    "passed": "نجح",
+    "failed": "فشل",
+    "pending": "قيد الانتظار",
+    "viewDetails": "عرض التفاصيل",
+    "deleteTraining": "حذف التدريب",
+    "deleteConfirm": "هل أنت متأكد من حذف \"{{name}}\"؟ سيؤدي هذا أيضاً إلى حذف جميع المتدربين المرتبطين وشهاداتهم. لا يمكن التراجع عن هذا الإجراء.",
+    "deleteSuccess": "تم حذف التدريب بنجاح",
+    "deleteError": "فشل حذف التدريب"
+  },
+  "trainingForm": {
+    "createTitle": "إنشاء تدريب",
+    "editTitle": "تعديل التدريب",
+    "trainingName": "اسم التدريب *",
+    "trainingNamePlaceholder": "مثال: امتثال أمن المبنى",
+    "descriptionPlaceholder": "وصف برنامج التدريب...",
+    "trainingDate": "تاريخ التدريب *",
+    "durationPlaceholder": "مثال: 4 ساعات",
+    "durationUnit": {
+      "placeholder": "اختر الوحدة",
+      "hour": "ساعات",
+      "day": "أيام",
+      "month": "أشهر"
+    },
+    "createTraining": "إنشاء التدريب",
+    "updateTraining": "تحديث التدريب",
+    "createSuccess": "تم إنشاء التدريب بنجاح",
+    "updateSuccess": "تم تحديث التدريب بنجاح",
+    "createError": "فشل إنشاء التدريب",
+    "updateError": "فشل تحديث التدريب"
+  },
+  "trainingDetail": {
+    "backToTrainings": "العودة إلى التدريبات",
+    "uploadExcel": "رفع Excel",
+    "totalTrainees": "إجمالي المتدربين",
+    "passed": "نجح",
+    "failed": "فشل",
+    "pending": "قيد الانتظار",
+    "trainees": "المتدربون",
+    "searchTrainees": "بحث عن المتدربين...",
+    "filterByStatus": "تصفية حسب الحالة",
+    "allStatus": "جميع الحالات",
+    "exportCsv": "تصدير CSV",
+    "noTraineesMatch": "لا يوجد متدربون يطابقون بحثك",
+    "noTraineesYet": "لا يوجد متدربون بعد",
+    "uploadTrainees": "رفع المتدربين",
+    "updateStatus": "تحديث الحالة",
+    "updateStatusDescription": "تحديث الحالة لـ {{name}} {{surname}}",
+    "updateStatusSuccess": "تم تحديث حالة المتدرب بنجاح",
+    "updateStatusError": "فشل تحديث حالة المتدرب",
+    "deleteTrainee": "حذف المتدرب",
+    "deleteTraineeConfirm": "هل أنت متأكد من حذف {{name}} {{surname}}؟ لا يمكن التراجع عن هذا الإجراء.",
+    "deleteTraineeSuccess": "تم حذف المتدرب بنجاح",
+    "deleteTraineeError": "فشل حذف المتدرب",
+    "trainingNotFound": "التدريب غير موجود"
+  },
+  "traineeForm": {
+    "createTitle": "إنشاء متدرب",
+    "editTitle": "تعديل المتدرب",
+    "firstName": "الاسم الأول *",
+    "lastName": "اسم العائلة *",
+    "email": "البريد الإلكتروني *",
+    "phoneNumber": "رقم الهاتف *",
+    "companyName": "اسم الشركة",
+    "trainingDate": "تاريخ التدريب *",
+    "status": "الحالة",
+    "createSuccess": "تم إنشاء المتدرب بنجاح",
+    "updateSuccess": "تم تحديث المتدرب بنجاح",
+    "createError": "فشل إنشاء المتدرب",
+    "updateError": "فشل تحديث المتدرب"
+  },
+  "excelUpload": {
+    "title": "رفع قائمة المتدربين",
+    "subtitle": "رفع ملف Excel يحتوي على معلومات المتدربين للاستيراد المجمع",
+    "backToTraining": "العودة إلى التدريب",
+    "selectFile": "اختر ملف Excel",
+    "upload": "رفع الملف",
+    "uploading": "جاري الرفع...",
+    "processing": "معالجة الملف...",
+    "remove": "إزالة",
+    "browseFiles": "تصفح الملفات",
+    "dropFile": "أسقط ملف Excel هنا أو انقر للتصفح",
+    "supportsFiles": "يدعم ملفات .xlsx و .xls",
+    "downloadTemplate": "تحميل القالب",
+    "requiredColumns": "الأعمدة المطلوبة",
+    "requiredColumnsDescription": "يجب أن يحتوي ملف Excel الخاص بك على هذه الأعمدة: name, surname, email, phone_number, company_name (اختياري). سيتم تعيين تاريخ التدريب والمعرف تلقائياً من التدريب الحالي.",
+    "invalidFile": "ملف غير صالح",
+    "invalidFileDescription": "يرجى اختيار ملف Excel (.xlsx أو .xls)",
+    "uploadComplete": "اكتمل الرفع",
+    "uploadCompletedWithErrors": "اكتمل الرفع مع وجود أخطاء",
+    "successfullyImported": "تم الاستيراد بنجاح: {{count}} متدربين",
+    "failedCount": "فشل: {{count}} متدربين",
+    "uploadFailed": "فشل الرفع",
+    "noTraineesImported": "لم يتم استيراد أي متدربين. {{count}} فشل",
+    "viewTrainees": "عرض المتدربين",
+    "successTitle": "نجاح",
+    "successDescription": "تم استيراد {{count}} متدربين بنجاح",
+    "partiallyCompleteTitle": "اكتمل جزئياً",
+    "partiallyCompleteDescription": "تم استيراد {{count}} متدربين، {{failed}} فشل",
+    "errorTitle": "خطأ",
+    "errorDescription": "فشل رفع الملف",
+    "instructions": {
+      "title": "تنسيق ملف Excel",
+      "description": "يجب أن يحتوي ملف Excel الخاص بك على الأعمدة التالية:",
+      "columns": {
+        "name": "name (مطلوب)",
+        "surname": "surname (مطلوب)",
+        "email": "email (مطلوب)",
+        "phone_number": "phone_number (مطلوب)",
+        "company_name": "company_name (اختياري)"
+      },
+      "note": "يجب أن تحتوي الصف الأول على رؤوس الأعمدة. سيتم التحقق من البيانات تلقائياً."
+    },
+    "success": "تم رفع الملف بنجاح",
+    "error": "فشل رفع الملف",
+    "imported": "تم استيراد {{count}} متدرب",
+    "imported_plural": "تم استيراد {{count}} متدربين",
+    "failed": "{{count}} فشل",
+    "errors": "الأخطاء"
+  },
+  "verification": {
+    "title": "التحقق من الشهادة",
+    "subtitle": "أدخل معرف الشهادة أو معرف المتدرب للتحقق فوراً من إكمال التدريب والأصالة.",
+    "placeholder": "أدخل معرف الشهادة أو معرف المتدرب",
+    "verify": "التحقق من الشهادة",
+    "verifying": "جاري التحقق من الشهادة...",
+    "howToVerify": {
+      "title": "كيفية التحقق:",
+      "point1": "امسح رمز QR على الشهادة باستخدام كاميرا هاتفك",
+      "point2": "أو أدخل يدوياً معرف الشهادة أو معرف المتدرب المذكور على الشهادة",
+      "point3": "سيقوم النظام بالتحقق فوراً مما إذا كانت الشهادة صالحة"
+    },
+    "verified": {
+      "title": "تم التحقق من الشهادة",
+      "subtitle": "هذه الشهادة صالحة وأصيلة",
+      "training": "التدريب",
+      "trainingDate": "تاريخ التدريب",
+      "certificateId": "معرف الشهادة",
+      "downloadCertificate": "تحميل الشهادة",
+      "verifyAnother": "التحقق من شهادة أخرى"
+    },
+    "notFound": {
+      "title": "الشهادة غير موجودة",
+      "description": "معرف الشهادة هذا غير صالح، أو لم يتم إصدار الشهادة بعد.",
+      "tryAnother": "جرب معرف آخر"
+    }
+  },
+  "status": {
+    "pending": "قيد الانتظار",
+    "passed": "نجح",
+    "failed": "فشل"
+  },
+  "certificate": {
+    "title": "شهادة الإنجاز",
+    "certifies": "هذا يثبت أن",
+    "hasCompleted": "أكمل بنجاح التدريب",
+    "on": "في",
+    "certificateId": "معرف الشهادة",
+    "issueDate": "تاريخ الإصدار",
+    "scanToVerify": "امسح رمز QR للتحقق"
+  },
+  "notFound": {
+    "title": "الصفحة غير موجودة",
+    "description": "الصفحة التي تبحث عنها غير موجودة.",
+    "goHome": "الذهاب إلى الصفحة الرئيسية"
+  },
+  "analytics": {
+    "title": "التحليلات",
+    "subtitle": "إحصائيات ومعلومات التدريب",
+    "totalTrainees": "إجمالي المتدربين",
+    "overallPassRate": "معدل النجاح الإجمالي",
+    "certificatesIssued": "الشهادات الصادرة",
+    "companies": "الشركات",
+    "statusDistribution": "توزيع الحالة",
+    "trainingProgramsPerformance": "أداء برامج التدريب",
+    "noTrainingData": "لا توجد بيانات تدريب متاحة",
+    "passed": "نجح",
+    "failed": "فشل",
+    "pending": "قيد الانتظار"
+  }
+}
+

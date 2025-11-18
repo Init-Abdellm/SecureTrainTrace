@@ -1,0 +1,326 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "back": "Back",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "update": "Update",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "download": "Download",
+    "upload": "Upload",
+    "view": "View",
+    "actions": "Actions",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "company": "Company",
+    "status": "Status",
+    "date": "Date",
+    "duration": "Duration",
+    "description": "Description",
+    "all": "All",
+    "yes": "Yes",
+    "no": "No",
+    "success": "Success",
+    "error": "Error",
+    "unauthorized": "Unauthorized",
+    "saving": "Saving...",
+    "noDescription": "No description",
+    "noDate": "No date"
+  },
+  "nav": {
+    "adminLogin": "Admin Login",
+    "backToHome": "Back to Home",
+    "constructionSiteSafety": "Construction Site Safety"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "trainings": "Trainings",
+    "analytics": "Analytics",
+    "trainingPlatform": "Training Platform",
+    "administrator": "Administrator",
+    "systemAdmin": "System Admin"
+  },
+  "landing": {
+    "title": "Construction Safety Training & Certification",
+    "subtitle": "Manage training programs, track trainee progress, issue digital certificates, and enable instant verification for construction site safety compliance.",
+    "verifyCertificate": "Verify Certificate",
+    "howItWorks": "How It Works",
+    "howItWorksSubtitle": "A complete workflow for managing construction safety training from enrollment to certification",
+    "step1": {
+      "title": "Upload Trainees",
+      "description": "Import trainee data via Excel. Bulk upload with automatic validation and profile creation."
+    },
+    "step2": {
+      "title": "Conduct Training",
+      "description": "Deliver safety training programs. Track attendance and participation for each session."
+    },
+    "step3": {
+      "title": "Update Status",
+      "description": "Mark trainees as passed or failed. System automatically tracks progress and completion."
+    },
+    "step4": {
+      "title": "Issue Certificates",
+      "description": "Generate professional PDF certificates with unique IDs and QR codes for verification."
+    },
+    "features": {
+      "title": "Platform Features",
+      "subtitle": "Everything you need to manage safety training and certifications",
+      "bulkImport": {
+        "title": "Bulk Import",
+        "description": "Upload trainee lists via Excel files. Automatic validation ensures data accuracy before import."
+      },
+      "statusTracking": {
+        "title": "Status Tracking",
+        "description": "Real-time tracking of trainee progress. Manage pending, passed, and failed statuses efficiently."
+      },
+      "digitalCertificates": {
+        "title": "Digital Certificates",
+        "description": "Automatically generate professional PDF certificates with unique identifiers and QR codes."
+      },
+      "qrVerification": {
+        "title": "QR Verification",
+        "description": "Each certificate includes a scannable QR code for instant public verification of authenticity."
+      },
+      "secureAccess": {
+        "title": "Secure Access",
+        "description": "Role-based access control. Admin tools are protected while verification remains public."
+      },
+      "trainingHistory": {
+        "title": "Training History",
+        "description": "Complete audit trail of all training sessions, attendance records, and certificate issuance."
+      }
+    },
+    "safetyCompliance": {
+      "title": "Safety Compliance Made Simple",
+      "description": "Our platform ensures your construction site meets all safety training requirements. Track certifications, maintain compliance records, and provide instant proof of training to inspectors and stakeholders.",
+      "point1": "Industry-standard safety training programs",
+      "point2": "Automated certificate generation and distribution",
+      "point3": "Public verification without login requirements"
+    },
+    "verifyCta": {
+      "title": "Verify a Certificate",
+      "description": "Anyone can verify certificate authenticity by scanning the QR code or entering the certificate ID. No login required.",
+      "verifyNow": "Verify Now"
+    },
+    "footer": {
+      "copyright": "All rights reserved."
+    }
+  },
+  "login": {
+    "title": "Admin Portal",
+    "subtitle": "Construction Site Safety",
+    "username": "Username",
+    "password": "Password",
+    "usernamePlaceholder": "Enter your username",
+    "passwordPlaceholder": "Enter your password",
+    "login": "Login",
+    "loggingIn": "Logging in...",
+    "loggedOut": "You are logged out. Logging in again..."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Overview of your training programs and trainee performance",
+    "totalTrainings": "Total Trainings",
+    "totalTrainees": "Total Trainees",
+    "certificatesIssued": "Certificates Issued",
+    "passRate": "Pass Rate",
+    "recentActivity": "Recent Activity",
+    "recentActivityDescription": "View detailed training information and manage trainees from the Trainings page."
+  },
+  "trainings": {
+    "title": "Training Programs",
+    "subtitle": "Manage your security training programs",
+    "newTraining": "New Training",
+    "noTrainings": "No trainings yet",
+    "noTrainingsDescription": "Get started by creating your first training program",
+    "createTraining": "Create Training",
+    "trainees": "trainees",
+    "passRate": "Pass Rate",
+    "passed": "Passed",
+    "failed": "Failed",
+    "pending": "Pending",
+    "viewDetails": "View Details",
+    "deleteTraining": "Delete Training",
+    "deleteConfirm": "Are you sure you want to delete \"{{name}}\"? This will also delete all associated trainees and their certificates. This action cannot be undone.",
+    "deleteSuccess": "Training deleted successfully",
+    "deleteError": "Failed to delete training"
+  },
+  "trainingForm": {
+    "createTitle": "Create Training",
+    "editTitle": "Edit Training",
+    "trainingName": "Training Name *",
+    "trainingNamePlaceholder": "e.g., Building Security Compliance",
+    "descriptionPlaceholder": "Describe the training program...",
+    "trainingDate": "Training Date *",
+    "durationPlaceholder": "e.g., 4 hours",
+    "durationUnit": {
+      "placeholder": "Select unit",
+      "hour": "hours",
+      "day": "days",
+      "month": "months"
+    },
+    "createTraining": "Create Training",
+    "updateTraining": "Update Training",
+    "createSuccess": "Training created successfully",
+    "updateSuccess": "Training updated successfully",
+    "createError": "Failed to create training",
+    "updateError": "Failed to update training"
+  },
+  "trainingDetail": {
+    "backToTrainings": "Back to Trainings",
+    "uploadExcel": "Upload Excel",
+    "totalTrainees": "Total Trainees",
+    "passed": "Passed",
+    "failed": "Failed",
+    "pending": "Pending",
+    "trainees": "Trainees",
+    "searchTrainees": "Search trainees...",
+    "filterByStatus": "Filter by status",
+    "allStatus": "All Status",
+    "exportCsv": "Export CSV",
+    "noTraineesMatch": "No trainees match your search",
+    "noTraineesYet": "No trainees yet",
+    "uploadTrainees": "Upload Trainees",
+    "updateStatus": "Update Status",
+    "updateStatusDescription": "Update the status for {{name}} {{surname}}",
+    "updateStatusSuccess": "Trainee status updated successfully",
+    "updateStatusError": "Failed to update trainee status",
+    "deleteTrainee": "Delete Trainee",
+    "deleteTraineeConfirm": "Are you sure you want to delete {{name}} {{surname}}? This action cannot be undone.",
+    "deleteTraineeSuccess": "Trainee deleted successfully",
+    "deleteTraineeError": "Failed to delete trainee",
+    "trainingNotFound": "Training not found"
+  },
+  "traineeForm": {
+    "createTitle": "Create Trainee",
+    "editTitle": "Edit Trainee",
+    "firstName": "First Name *",
+    "lastName": "Last Name *",
+    "email": "Email *",
+    "phoneNumber": "Phone Number *",
+    "companyName": "Company Name",
+    "trainingDate": "Training Date *",
+    "status": "Status",
+    "createSuccess": "Trainee created successfully",
+    "updateSuccess": "Trainee updated successfully",
+    "createError": "Failed to create trainee",
+    "updateError": "Failed to update trainee"
+  },
+  "excelUpload": {
+    "title": "Upload Trainee List",
+    "subtitle": "Upload an Excel file containing trainee information to bulk import",
+    "backToTraining": "Back to Training",
+    "selectFile": "Select Excel File",
+    "upload": "Upload File",
+    "uploading": "Uploading...",
+    "processing": "Processing file...",
+    "remove": "Remove",
+    "browseFiles": "Browse Files",
+    "dropFile": "Drop Excel file here or click to browse",
+    "supportsFiles": "Supports .xlsx and .xls files",
+    "downloadTemplate": "Download Template",
+    "requiredColumns": "Required Columns",
+    "requiredColumnsDescription": "Your Excel file must contain these columns: name, surname, email, phone_number, company_name (optional). The training date and ID will be automatically set from the current training.",
+    "invalidFile": "Invalid File",
+    "invalidFileDescription": "Please select an Excel file (.xlsx or .xls)",
+    "uploadComplete": "Upload Complete",
+    "uploadCompletedWithErrors": "Upload Completed with Errors",
+    "successfullyImported": "Successfully imported: {{count}} trainees",
+    "failedCount": "Failed: {{count}} trainees",
+    "uploadFailed": "Upload Failed",
+    "noTraineesImported": "No trainees were imported. {{count}} failed",
+    "viewTrainees": "View Trainees",
+    "successTitle": "Success",
+    "successDescription": "Successfully imported {{count}} trainees",
+    "partiallyCompleteTitle": "Partially Complete",
+    "partiallyCompleteDescription": "Imported {{count}} trainees, {{failed}} failed",
+    "errorTitle": "Error",
+    "errorDescription": "Failed to upload file",
+    "instructions": {
+      "title": "Excel File Format",
+      "description": "Your Excel file should contain the following columns:",
+      "columns": {
+        "name": "name (required)",
+        "surname": "surname (required)",
+        "email": "email (required)",
+        "phone_number": "phone_number (required)",
+        "company_name": "company_name (optional)"
+      },
+      "note": "The first row should contain column headers. Data validation will be performed automatically."
+    },
+    "success": "File uploaded successfully",
+    "error": "Failed to upload file",
+    "imported": "{{count}} trainee imported",
+    "imported_plural": "{{count}} trainees imported",
+    "failed": "{{count}} failed",
+    "errors": "Errors"
+  },
+  "verification": {
+    "title": "Verify Certificate",
+    "subtitle": "Enter a certificate ID or trainee ID to instantly verify training completion and authenticity.",
+    "placeholder": "Enter Certificate ID or Trainee ID",
+    "verify": "Verify Certificate",
+    "verifying": "Verifying certificate...",
+    "howToVerify": {
+      "title": "How to verify:",
+      "point1": "Scan the QR code on the certificate using your phone camera",
+      "point2": "Or manually enter the Certificate ID or Trainee ID shown on the certificate",
+      "point3": "The system will instantly verify if the certificate is valid"
+    },
+    "verified": {
+      "title": "Certificate Verified",
+      "subtitle": "This certificate is valid and authentic",
+      "training": "Training",
+      "trainingDate": "Training Date",
+      "certificateId": "Certificate ID",
+      "downloadCertificate": "Download Certificate",
+      "verifyAnother": "Verify Another Certificate"
+    },
+    "notFound": {
+      "title": "Certificate Not Found",
+      "description": "This certificate ID is invalid, or the certificate has not been issued yet.",
+      "tryAnother": "Try Another ID"
+    }
+  },
+  "status": {
+    "pending": "Pending",
+    "passed": "Passed",
+    "failed": "Failed"
+  },
+  "certificate": {
+    "title": "Certificate of Completion",
+    "certifies": "This certifies that",
+    "hasCompleted": "has successfully completed the training",
+    "on": "on",
+    "certificateId": "Certificate ID",
+    "issueDate": "Issue Date",
+    "scanToVerify": "Scan QR code to verify"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "The page you are looking for does not exist.",
+    "goHome": "Go to Home"
+  },
+  "analytics": {
+    "title": "Analytics",
+    "subtitle": "Training statistics and insights",
+    "totalTrainees": "Total Trainees",
+    "overallPassRate": "Overall Pass Rate",
+    "certificatesIssued": "Certificates Issued",
+    "companies": "Companies",
+    "statusDistribution": "Status Distribution",
+    "trainingProgramsPerformance": "Training Programs Performance",
+    "noTrainingData": "No training data available",
+    "passed": "Passed",
+    "failed": "Failed",
+    "pending": "Pending"
+  }
+}
+

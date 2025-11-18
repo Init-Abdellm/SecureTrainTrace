@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
@@ -19,6 +20,8 @@ interface UploadResult {
 }
 
 export default function ExcelUpload() {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
   const { id } = useParams();
   const [, navigate] = useLocation();
   const { toast } = useToast();
@@ -30,15 +33,15 @@ export default function ExcelUpload() {
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
       toast({
-        title: "Unauthorized",
-        description: "You are logged out. Logging in again...",
+        title: t("common.unauthorized"),
+        description: t("login.loggedOut"),
         variant: "destructive",
       });
       setTimeout(() => {
         window.location.href = "/api/login";
       }, 500);
     }
-  }, [isAuthenticated, authLoading, toast]);
+  }, [isAuthenticated, authLoading, toast, t]);
 
   const uploadMutation = useMutation({
     mutationFn: async (file: File) => {
@@ -63,18 +66,38 @@ export default function ExcelUpload() {
     },
     onSuccess: (data: UploadResult) => {
       setUploadResult(data);
-      queryClient.invalidateQueries({ queryKey: ["/api/trainees/by-training?trainingId=" + id] });
+      // Invalidate all trainee-related queries to refresh the data
       queryClient.invalidateQueries({ queryKey: ["/api/trainees"] });
+      queryClient.invalidateQueries({
+        queryKey: ["/api/trainings"],
+        exact: false
+      });
+      // Also refetch the specific training's trainees
+      queryClient.refetchQueries({
+        queryKey: ["/api/trainings", id, "trainees"]
+      });
 
-      if (data.failed === 0) {
-        toast({
-          title: "Success",
-          description: `Successfully imported ${data.imported} trainees`,
-        });
+      if (data.imported > 0) {
+        if (data.failed === 0) {
+          toast({
+            title: t("excelUpload.successTitle"),
+            description: t("excelUpload.successDescription", { count: data.imported }),
+          });
+        } else {
+          toast({
+            title: t("excelUpload.partiallyCompleteTitle"),
+            description: t("excelUpload.partiallyCompleteDescription", { count: data.imported, failed: data.failed }),
+            variant: "destructive",
+          });
+        }
+        // Redirect to training detail page after successful upload (even if partial)
+        setTimeout(() => {
+          navigate(`/admin/trainings/${id}`);
+        }, 1500);
       } else {
         toast({
-          title: "Partially Complete",
-          description: `Imported ${data.imported} trainees, ${data.failed} failed`,
+          title: t("excelUpload.uploadFailed"),
+          description: t("excelUpload.noTraineesImported", { count: data.failed }),
           variant: "destructive",
         });
       }
@@ -82,8 +105,8 @@ export default function ExcelUpload() {
     onError: (error: Error) => {
       if (isUnauthorizedError(error)) {
         toast({
-          title: "Unauthorized",
-          description: "You are logged out. Logging in again...",
+          title: t("common.unauthorized"),
+          description: t("login.loggedOut"),
           variant: "destructive",
         });
         setTimeout(() => {
@@ -92,8 +115,8 @@ export default function ExcelUpload() {
         return;
       }
       toast({
-        title: "Error",
-        description: error.message || "Failed to upload file",
+        title: t("excelUpload.errorTitle"),
+        description: error.message || t("excelUpload.errorDescription"),
         variant: "destructive",
       });
     },
@@ -121,13 +144,13 @@ export default function ExcelUpload() {
         setUploadResult(null);
       } else {
         toast({
-          title: "Invalid File",
-          description: "Please select an Excel file (.xlsx or .xls)",
+          title: t("excelUpload.invalidFile"),
+          description: t("excelUpload.invalidFileDescription"),
           variant: "destructive",
         });
       }
     }
-  }, [toast]);
+  }, [toast, t]);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -169,24 +192,23 @@ export default function ExcelUpload() {
         className="mb-4"
         data-testid="button-back"
       >
-        <ArrowLeft className="w-4 h-4 mr-2" />
-        Back to Training
+        <ArrowLeft className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+        {t("excelUpload.backToTraining")}
       </Button>
 
       <Card>
         <CardHeader>
-          <CardTitle>Upload Trainee List</CardTitle>
+          <CardTitle>{t("excelUpload.title")}</CardTitle>
           <p className="text-sm text-muted-foreground">
-            Upload an Excel file containing trainee information to bulk import
+            {t("excelUpload.subtitle")}
           </p>
         </CardHeader>
         <CardContent className="space-y-6">
           <Alert>
             <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Required Columns</AlertTitle>
+            <AlertTitle>{t("excelUpload.requiredColumns")}</AlertTitle>
             <AlertDescription>
-              Your Excel file must contain these columns: name, surname, email, phone_number,
-              company_name (optional). The training date and ID will be automatically set from the current training.
+              {t("excelUpload.requiredColumnsDescription")}
             </AlertDescription>
           </Alert>
 
@@ -196,8 +218,8 @@ export default function ExcelUpload() {
               onClick={downloadTemplate}
               data-testid="button-download-template"
             >
-              <FileSpreadsheet className="w-4 h-4 mr-2" />
-              Download Template
+              <FileSpreadsheet className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t("excelUpload.downloadTemplate")}
             </Button>
           </div>
 
@@ -231,7 +253,7 @@ export default function ExcelUpload() {
                     disabled={uploadMutation.isPending}
                     data-testid="button-upload"
                   >
-                    {uploadMutation.isPending ? "Uploading..." : "Upload File"}
+                    {uploadMutation.isPending ? t("excelUpload.uploading") : t("excelUpload.upload")}
                   </Button>
                   <Button
                     variant="outline"
@@ -239,8 +261,8 @@ export default function ExcelUpload() {
                     disabled={uploadMutation.isPending}
                     data-testid="button-remove-file"
                   >
-                    <X className="w-4 h-4 mr-2" />
-                    Remove
+                    <X className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                    {t("excelUpload.remove")}
                   </Button>
                 </div>
               </div>
@@ -253,10 +275,10 @@ export default function ExcelUpload() {
                 </div>
                 <div>
                   <p className="font-medium text-foreground mb-1">
-                    Drop Excel file here or click to browse
+                    {t("excelUpload.dropFile")}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Supports .xlsx and .xls files
+                    {t("excelUpload.supportsFiles")}
                   </p>
                 </div>
                 <div>
@@ -270,7 +292,7 @@ export default function ExcelUpload() {
                   />
                   <label htmlFor="file-input">
                     <Button variant="outline" asChild>
-                      <span>Browse Files</span>
+                      <span>{t("excelUpload.browseFiles")}</span>
                     </Button>
                   </label>
                 </div>
@@ -280,7 +302,7 @@ export default function ExcelUpload() {
 
           {uploadMutation.isPending && (
             <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Processing file...</p>
+              <p className="text-sm text-muted-foreground">{t("excelUpload.processing")}</p>
               <Progress value={50} className="w-full" />
             </div>
           )}
@@ -294,18 +316,18 @@ export default function ExcelUpload() {
                   <AlertCircle className="h-4 w-4" />
                 )}
                 <AlertTitle>
-                  {uploadResult.failed === 0 ? "Upload Complete" : "Upload Completed with Errors"}
+                  {uploadResult.failed === 0 ? t("excelUpload.uploadComplete") : t("excelUpload.uploadCompletedWithErrors")}
                 </AlertTitle>
                 <AlertDescription>
-                  Successfully imported: {uploadResult.imported} trainees
-                  {uploadResult.failed > 0 && ` • Failed: ${uploadResult.failed} trainees`}
+                  {t("excelUpload.successfullyImported", { count: uploadResult.imported })}
+                  {uploadResult.failed > 0 && ` • ${t("excelUpload.failedCount", { count: uploadResult.failed })}`}
                 </AlertDescription>
               </Alert>
 
               {uploadResult.errors.length > 0 && (
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-base">Errors</CardTitle>
+                    <CardTitle className="text-base">{t("excelUpload.errors")}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="max-h-96 overflow-y-auto space-y-2">
@@ -325,7 +347,7 @@ export default function ExcelUpload() {
               {uploadResult.imported > 0 && (
                 <div className="flex justify-end">
                   <Button onClick={() => navigate(`/admin/trainings/${id}`)} data-testid="button-view-trainees">
-                    View Trainees
+                    {t("excelUpload.viewTrainees")}
                   </Button>
                 </div>
               )}

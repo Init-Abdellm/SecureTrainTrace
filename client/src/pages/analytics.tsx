@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
@@ -9,21 +10,22 @@ import type { Training, Trainee } from "@shared/schema";
 import { BarChart3, TrendingUp, Users, Award } from "lucide-react";
 
 export default function Analytics() {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
       toast({
-        title: "Unauthorized",
-        description: "You are logged out. Logging in again...",
+        title: t("common.unauthorized"),
+        description: t("login.loggedOut"),
         variant: "destructive",
       });
       setTimeout(() => {
         window.location.href = "/api/login";
       }, 500);
     }
-  }, [isAuthenticated, authLoading, toast]);
+  }, [isAuthenticated, authLoading, toast, t]);
 
   const { data: trainings, isLoading: trainingsLoading } = useQuery<Training[]>({
     queryKey: ["/api/trainings"],
@@ -76,9 +78,9 @@ export default function Analytics() {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Analytics</h1>
+        <h1 className="text-3xl font-bold text-foreground">{t("analytics.title")}</h1>
         <p className="text-muted-foreground mt-1">
-          Insights and statistics about your training programs
+          {t("analytics.subtitle")}
         </p>
       </div>
 
@@ -88,7 +90,7 @@ export default function Analytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground mb-1">
-                  Total Trainees
+                  {t("analytics.totalTrainees")}
                 </p>
                 <p className="text-2xl font-bold text-foreground">
                   {totalTrainees}
@@ -106,7 +108,7 @@ export default function Analytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground mb-1">
-                  Overall Pass Rate
+                  {t("analytics.overallPassRate")}
                 </p>
                 <p className="text-2xl font-bold text-chart-2">
                   {passRate}%
@@ -124,7 +126,7 @@ export default function Analytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground mb-1">
-                  Certificates Issued
+                  {t("analytics.certificatesIssued")}
                 </p>
                 <p className="text-2xl font-bold text-chart-3">
                   {passedTrainees}
@@ -142,7 +144,7 @@ export default function Analytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground mb-1">
-                  Companies
+                  {t("analytics.companies")}
                 </p>
                 <p className="text-2xl font-bold text-chart-4">
                   {companiesCount}
@@ -159,13 +161,13 @@ export default function Analytics() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <Card>
           <CardHeader>
-            <CardTitle>Status Distribution</CardTitle>
+            <CardTitle>{t("analytics.statusDistribution")}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span className="text-muted-foreground">Passed</span>
+                  <span className="text-muted-foreground">{t("analytics.passed")}</span>
                   <span className="font-medium text-chart-2">{passedTrainees} ({totalTrainees > 0 ? Math.round((passedTrainees / totalTrainees) * 100) : 0}%)</span>
                 </div>
                 <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
@@ -178,7 +180,7 @@ export default function Analytics() {
 
               <div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span className="text-muted-foreground">Failed</span>
+                  <span className="text-muted-foreground">{t("analytics.failed")}</span>
                   <span className="font-medium text-destructive">{failedTrainees} ({totalTrainees > 0 ? Math.round((failedTrainees / totalTrainees) * 100) : 0}%)</span>
                 </div>
                 <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
@@ -191,7 +193,7 @@ export default function Analytics() {
 
               <div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span className="text-muted-foreground">Pending</span>
+                  <span className="text-muted-foreground">{t("analytics.pending")}</span>
                   <span className="font-medium">{pendingTrainees} ({totalTrainees > 0 ? Math.round((pendingTrainees / totalTrainees) * 100) : 0}%)</span>
                 </div>
                 <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
@@ -207,12 +209,12 @@ export default function Analytics() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Training Programs Performance</CardTitle>
+            <CardTitle>{t("analytics.trainingProgramsPerformance")}</CardTitle>
           </CardHeader>
           <CardContent>
             {trainingStats.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-8">
-                No training data available
+                {t("analytics.noTrainingData")}
               </p>
             ) : (
               <div className="space-y-4">

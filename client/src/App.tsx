@@ -1,10 +1,12 @@
 import { Switch, Route, useLocation } from "wouter";
+import { useTranslation } from "react-i18next";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { LanguageSelector } from "@/components/language-selector";
 import { useAuth } from "@/hooks/useAuth";
 import NotFound from "@/pages/not-found";
 import Login from "@/pages/login";
@@ -22,10 +24,12 @@ import PublicVerification from "@/pages/public-verification";
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
 
+  const { t } = useTranslation();
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-muted-foreground">Loading...</div>
+        <div className="text-muted-foreground">{t("common.loading")}</div>
       </div>
     );
   }
@@ -71,6 +75,7 @@ function Router() {
 function AppContent() {
   const { isAuthenticated, isLoading } = useAuth();
   const [location] = useLocation();
+  const { t, i18n } = useTranslation();
   const sidebarStyle = {
     "--sidebar-width": "16rem",
     "--sidebar-width-icon": "3rem",
@@ -78,13 +83,14 @@ function AppContent() {
 
   const isAdminRoute = location.startsWith("/admin");
   const showSidebar = isAuthenticated && isAdminRoute;
+  const isRTL = i18n.language === 'ar';
 
   if (isLoading) {
     return (
       <>
         <Toaster />
         <div className="min-h-screen flex items-center justify-center">
-          <div className="text-muted-foreground">Loading...</div>
+          <div className="text-muted-foreground">{t("common.loading")}</div>
         </div>
       </>
     );
@@ -102,16 +108,17 @@ function AppContent() {
   return (
     <>
       <SidebarProvider style={sidebarStyle as React.CSSProperties}>
-        <div className="flex h-screen w-full bg-white">
+        <div className={`flex h-screen w-full bg-white ${isRTL ? 'flex-row-reverse' : ''}`}>
           <AppSidebar />
           <div className="flex flex-col flex-1 overflow-hidden">
-            <header className="flex items-center justify-between h-12 px-4 border-b border-border bg-white shadow-sm">
-              <div className="flex items-center gap-3">
+            <header className={`flex items-center justify-between h-12 px-4 border-b border-border bg-white shadow-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <SidebarTrigger data-testid="button-sidebar-toggle" className="h-8 w-8" />
                 <div className="text-sm font-bold text-foreground">
-                  Security Training Platform
+                  HSE New Generation Platform
                 </div>
               </div>
+              <LanguageSelector />
             </header>
             <main className="flex-1 overflow-y-auto bg-[#F3F2F2]">
               <Router />

@@ -11,7 +11,7 @@ export default async function handler(
   res: VercelResponse
 ) {
   const cookieHeader = req.headers.cookie || null;
-  
+
   if (!isAuthenticated(cookieHeader)) {
     return res.status(401).json({ message: "Unauthorized" });
   }
@@ -29,7 +29,7 @@ export default async function handler(
 
     if (req.method === "PATCH") {
       const { status, ...otherFields } = req.body;
-      
+
       // If status is changing to "passed", generate certificate
       if (status === "passed") {
         const trainee = await storage.getTrainee(id as string);
@@ -141,7 +141,7 @@ async function generateCertificate(
       const domain = process.env.APP_DOMAIN || process.env.VERCEL_URL || process.env.VERCEL_BRANCH_URL || 'localhost:5000';
       const protocol = process.env.NODE_ENV === "production" || process.env.VERCEL ? "https" : "http";
       const verificationUrl = `${protocol}://${domain}/verify/${trainee.id}`;
-      
+
       QRCode.toDataURL(verificationUrl, { width: 150 }, (err: Error | null | undefined, url: string) => {
         if (err) {
           console.error('QR Code generation error:', err);
@@ -152,7 +152,7 @@ async function generateCertificate(
         // Add QR code to PDF
         const qrImage = url.split(',')[1];
         const qrBuffer = Buffer.from(qrImage, 'base64');
-        
+
         doc.image(qrBuffer, doc.page.width - 150 - 72, doc.page.height - 150 - 72, {
           width: 120,
           height: 120

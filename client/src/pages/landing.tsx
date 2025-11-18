@@ -1,138 +1,203 @@
 import { Link } from "wouter";
-import { Shield, CheckCircle, QrCode, FileSpreadsheet, Award, ArrowRight } from "lucide-react";
+import { HardHat, Shield, QrCode, Upload, CheckCircle, Award, FileText, Users, Clock, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Shield className="w-8 h-8 text-primary" />
-            <span className="text-xl font-bold">Security Training Platform</span>
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-5xl px-4">
+        <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-gray-200/50 px-6 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-orange-600 rounded-lg flex items-center justify-center">
+                <HardHat className="w-5 h-5 text-white" strokeWidth={2.5} />
+              </div>
+              <span className="text-base font-bold text-gray-900">Construction Site Safety</span>
+            </div>
+            <Link href="/admin">
+              <Button variant="outline" size="sm" className="border-gray-300 h-9">
+                <Shield className="w-4 h-4 mr-2" />
+                Admin Login
+              </Button>
+            </Link>
           </div>
-          <Link href="/admin">
-            <Button variant="ghost" size="sm">
-              Admin Login
-            </Button>
-          </Link>
         </div>
-      </header>
+      </nav>
 
       {/* Hero Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-6">
-            Professional Security Training
-            <br />
-            <span className="text-primary">Certificate Management</span>
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            A comprehensive platform for managing offline security training traceability. 
-            Track trainees, issue digital certificates, and enable instant verification.
-          </p>
-          <div className="flex gap-4 justify-center">
-            <Link href="/verify">
-              <Button size="lg" className="gap-2">
-                <QrCode className="w-5 h-5" />
-                Verify Certificate
-              </Button>
-            </Link>
-            <Link href="/admin">
-              <Button size="lg" variant="outline" className="gap-2">
-                Admin Access
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16 px-6 bg-muted/30">
+      <section className="pt-32 pb-20 px-6 lg:px-8 bg-gradient-to-b from-orange-50 to-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            Streamlined Training Management
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <FeatureCard
-              icon={<FileSpreadsheet className="w-10 h-10 text-primary" />}
-              title="Bulk Import"
-              description="Upload trainee lists via Excel with automatic validation and profile creation."
-            />
-            <FeatureCard
-              icon={<CheckCircle className="w-10 h-10 text-primary" />}
-              title="Status Tracking"
-              description="Track trainee progress with pending, passed, and failed status management."
-            />
-            <FeatureCard
-              icon={<Award className="w-10 h-10 text-primary" />}
-              title="Digital Certificates"
-              description="Automatically generate professional PDF certificates for successful trainees."
-            />
-            <FeatureCard
-              icon={<QrCode className="w-10 h-10 text-primary" />}
-              title="QR Verification"
-              description="Each certificate includes a QR code for instant public verification."
-            />
-            <FeatureCard
-              icon={<Shield className="w-10 h-10 text-primary" />}
-              title="Secure & Compliant"
-              description="Built with security best practices and compliance standards in mind."
-            />
-            <FeatureCard
-              icon={<ArrowRight className="w-10 h-10 text-primary" />}
-              title="Easy Access"
-              description="Public verification requires no login. Admin tools are securely protected."
-            />
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                  Construction Safety Training & Certification
+                </h1>
+                <p className="text-xl text-gray-600 leading-relaxed">
+                  Manage training programs, track trainee progress, issue digital certificates, 
+                  and enable instant verification for construction site safety compliance.
+                </p>
+              </div>
+              <div>
+                <Link href="/verify">
+                  <Button size="lg" className="bg-orange-600 hover:bg-orange-700 h-12 px-8">
+                    <QrCode className="w-5 h-5 mr-2" />
+                    Verify Certificate
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="bg-gradient-to-br from-orange-100 to-orange-50 rounded-2xl p-8 shadow-xl">
+                <img src="/hero.gif" alt="Construction Safety" className="w-full rounded-xl" />
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section className="py-16 px-6">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            How It Works
-          </h2>
-          <div className="space-y-8">
-            <Step
+      {/* How It Works */}
+      <section className="py-24 px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              A complete workflow for managing construction safety training from enrollment to certification
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8">
+            <ProcessStep
               number="1"
-              title="Upload Trainee Data"
-              description="Administrators upload Excel files with trainee information for each training session."
+              icon={<Upload className="w-6 h-6" />}
+              title="Upload Trainees"
+              description="Import trainee data via Excel. Bulk upload with automatic validation and profile creation."
             />
-            <Step
+            <ProcessStep
               number="2"
-              title="Track Progress"
-              description="Update trainee status as they complete training and assessments."
+              icon={<Users className="w-6 h-6" />}
+              title="Conduct Training"
+              description="Deliver safety training programs. Track attendance and participation for each session."
             />
-            <Step
+            <ProcessStep
               number="3"
-              title="Issue Certificates"
-              description="Certificates are automatically generated when trainees pass, complete with unique IDs and QR codes."
+              icon={<CheckCircle className="w-6 h-6" />}
+              title="Update Status"
+              description="Mark trainees as passed or failed. System automatically tracks progress and completion."
             />
-            <Step
+            <ProcessStep
               number="4"
-              title="Verify Anytime"
-              description="Anyone can scan the QR code or enter a certificate ID to verify authenticity instantly."
+              icon={<Award className="w-6 h-6" />}
+              title="Issue Certificates"
+              description="Generate professional PDF certificates with unique IDs and QR codes for verification."
             />
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-6 bg-primary text-primary-foreground">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Ready to Verify a Certificate?
+      {/* Features Grid */}
+      <section className="py-24 px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Platform Features</h2>
+            <p className="text-xl text-gray-600">Everything you need to manage safety training and certifications</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <FeatureCard
+              icon={<FileText className="w-8 h-8 text-orange-600" />}
+              title="Bulk Import"
+              description="Upload trainee lists via Excel files. Automatic validation ensures data accuracy before import."
+            />
+            <FeatureCard
+              icon={<CheckCircle className="w-8 h-8 text-orange-600" />}
+              title="Status Tracking"
+              description="Real-time tracking of trainee progress. Manage pending, passed, and failed statuses efficiently."
+            />
+            <FeatureCard
+              icon={<Award className="w-8 h-8 text-orange-600" />}
+              title="Digital Certificates"
+              description="Automatically generate professional PDF certificates with unique identifiers and QR codes."
+            />
+            <FeatureCard
+              icon={<QrCode className="w-8 h-8 text-orange-600" />}
+              title="QR Verification"
+              description="Each certificate includes a scannable QR code for instant public verification of authenticity."
+            />
+            <FeatureCard
+              icon={<Lock className="w-8 h-8 text-orange-600" />}
+              title="Secure Access"
+              description="Role-based access control. Admin tools are protected while verification remains public."
+            />
+            <FeatureCard
+              icon={<Clock className="w-8 h-8 text-orange-600" />}
+              title="Training History"
+              description="Complete audit trail of all training sessions, attendance records, and certificate issuance."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Safety Visual */}
+      <section className="py-24 px-6 lg:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-6">
+              <h2 className="text-4xl font-bold text-gray-900">
+                Safety Compliance Made Simple
+              </h2>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                Our platform ensures your construction site meets all safety training requirements. 
+                Track certifications, maintain compliance records, and provide instant proof of training 
+                to inspectors and stakeholders.
+              </p>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                  </div>
+                  <span className="text-gray-700">Industry-standard safety training programs</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                  </div>
+                  <span className="text-gray-700">Automated certificate generation and distribution</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                  </div>
+                  <span className="text-gray-700">Public verification without login requirements</span>
+                </li>
+              </ul>
+            </div>
+            <div className="relative">
+              <div className="bg-gradient-to-br from-orange-100 to-yellow-50 rounded-2xl p-8 shadow-xl">
+                <img src="/Safety.gif" alt="Safety Training" className="w-full rounded-xl" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Verification CTA */}
+      <section className="py-24 px-6 lg:px-8 bg-gradient-to-br from-orange-600 to-orange-700">
+        <div className="max-w-4xl mx-auto text-center text-white space-y-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-2xl mb-4">
+            <QrCode className="w-8 h-8" />
+          </div>
+          <h2 className="text-4xl lg:text-5xl font-bold">
+            Verify a Certificate
           </h2>
-          <p className="text-lg mb-8 opacity-90">
-            Enter a certificate ID or scan a QR code to verify training completion.
+          <p className="text-xl text-orange-50 max-w-2xl mx-auto">
+            Anyone can verify certificate authenticity by scanning the QR code or entering 
+            the certificate ID. No login required.
           </p>
           <Link href="/verify">
-            <Button size="lg" variant="secondary" className="gap-2">
-              <QrCode className="w-5 h-5" />
+            <Button size="lg" className="bg-white text-orange-600 hover:bg-orange-50 h-14 px-8 text-lg font-semibold">
+              <QrCode className="w-5 h-5 mr-2" />
               Verify Now
             </Button>
           </Link>
@@ -140,35 +205,59 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border py-8 px-6">
-        <div className="max-w-7xl mx-auto text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Security Training Platform. All rights reserved.</p>
+      <footer className="py-8 px-6 lg:px-8 bg-white border-t border-gray-200">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center">
+                <HardHat className="w-5 h-5 text-white" strokeWidth={2.5} />
+              </div>
+              <span className="text-sm font-semibold text-gray-900">Construction Site Safety</span>
+            </div>
+            <p className="text-sm text-gray-500">
+              © {new Date().getFullYear()} All rights reserved.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
   );
 }
 
-function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
+function ProcessStep({ number, icon, title, description }: { 
+  number: string; 
+  icon: React.ReactNode; 
+  title: string; 
+  description: string;
+}) {
   return (
-    <div className="p-6 rounded-lg border border-border bg-background">
-      <div className="mb-4">{icon}</div>
-      <h3 className="text-lg font-semibold mb-2">{title}</h3>
-      <p className="text-sm text-muted-foreground">{description}</p>
+    <div className="relative">
+      <div className="flex flex-col items-center text-center space-y-4">
+        <div className="relative">
+          <div className="w-16 h-16 bg-orange-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
+            {icon}
+          </div>
+          <div className="absolute -top-2 -right-2 w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+            <span className="text-sm font-bold text-orange-600">{number}</span>
+          </div>
+        </div>
+        <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+        <p className="text-gray-600 leading-relaxed">{description}</p>
+      </div>
     </div>
   );
 }
 
-function Step({ number, title, description }: { number: string; title: string; description: string }) {
+function FeatureCard({ icon, title, description }: { 
+  icon: React.ReactNode; 
+  title: string; 
+  description: string;
+}) {
   return (
-    <div className="flex gap-6">
-      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xl font-bold">
-        {number}
-      </div>
-      <div className="flex-1 pt-2">
-        <h3 className="text-xl font-semibold mb-2">{title}</h3>
-        <p className="text-muted-foreground">{description}</p>
-      </div>
+    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+      <div className="mb-4">{icon}</div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
+      <p className="text-gray-600 leading-relaxed">{description}</p>
     </div>
   );
 }

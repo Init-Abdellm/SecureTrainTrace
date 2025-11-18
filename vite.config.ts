@@ -38,5 +38,5 @@ export default defineConfig({
       allow: [".."],
     },
   },
-  publicDir: false,
+  publicDir: path.resolve(import.meta.dirname, "client/public"),
 });

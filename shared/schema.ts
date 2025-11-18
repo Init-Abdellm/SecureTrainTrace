@@ -47,14 +47,11 @@ export const trainings = pgTable("trainings", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const insertTrainingSchema = createInsertSchema(trainings, {
+export const insertTrainingSchema = z.object({
   name: z.string().min(1, "Name is required"),
+  description: z.string().optional(),
   date: z.string().min(1, "Date is required"),
-}).pick({
-  name: true,
-  description: true,
-  date: true,
-  duration: true,
+  duration: z.string().optional(),
 });
 
 export type InsertTraining = z.infer<typeof insertTrainingSchema>;
@@ -77,22 +74,15 @@ export const trainees = pgTable("trainees", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const insertTraineeSchema = createInsertSchema(trainees, {
+export const insertTraineeSchema = z.object({
   name: z.string().min(1, "Name is required"),
   surname: z.string().min(1, "Surname is required"),
   email: z.string().email("Invalid email format"),
   phoneNumber: z.string().min(1, "Phone number is required"),
+  companyName: z.string().optional(),
   trainingId: z.string().min(1, "Training ID is required"),
   trainingDate: z.string().min(1, "Training date is required"),
-}).pick({
-  name: true,
-  surname: true,
-  email: true,
-  phoneNumber: true,
-  companyName: true,
-  trainingId: true,
-  trainingDate: true,
-  status: true,
+  status: z.enum(["pending", "passed", "failed"]).default("pending"),
 });
 
 export type InsertTrainee = z.infer<typeof insertTraineeSchema>;

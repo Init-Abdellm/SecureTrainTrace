@@ -2,11 +2,9 @@ import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
 import { eq } from 'drizzle-orm';
 import * as schema from '../../shared/schema';
+import ws from 'ws';
 
-// Configure for serverless environment - use fetch instead of WebSocket
-neonConfig.fetchConnectionCache = true;
-neonConfig.useSecureWebSocket = true;
-neonConfig.pipelineConnect = false;
+neonConfig.webSocketConstructor = ws;
 
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL must be set. Did you forget to provision a database?');

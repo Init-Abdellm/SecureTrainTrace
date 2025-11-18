@@ -12,7 +12,10 @@ const db = drizzle(sql, { schema });
 
 class DatabaseStorage {
   async getAllTrainings() {
-    return await db.select().from(schema.trainings).orderBy(schema.trainings.createdAt);
+    console.log('DATABASE_URL:', process.env.DATABASE_URL?.substring(0, 50) + '...');
+    const result = await db.select().from(schema.trainings).orderBy(schema.trainings.createdAt);
+    console.log('Trainings found:', result.length);
+    return result;
   }
 
   async getTraining(id: string) {

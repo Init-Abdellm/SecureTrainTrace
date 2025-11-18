@@ -21,7 +21,7 @@ export default function Login() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/auth/status"] });
-      navigate("/");
+      navigate("/admin");
     },
     onError: () => {
       toast({

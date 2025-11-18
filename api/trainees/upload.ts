@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { requireAuth } from '../_lib/auth';
-import { storage } from '../_lib/storage';
-import { excelTraineeSchema } from '../../shared/schema';
+import { requireAuth } from '../_lib/auth.js';
+import { storage } from '../_lib/storage.js';
+import { excelTraineeSchema } from '../../shared/schema.js';
 import * as XLSX from 'xlsx';
 import multiparty from 'multiparty';
 
@@ -18,7 +18,7 @@ async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const form = new multiparty.Form();
-    
+
     const { fields, files } = await new Promise<{ fields: any; files: any }>((resolve, reject) => {
       form.parse(req, (err, fields, files) => {
         if (err) reject(err);

@@ -13,7 +13,7 @@ export function checkAuth(req: VercelRequest): boolean {
   }
 }
 
-export function requireAuth(handler: (req: VercelRequest, res: VercelResponse) => Promise<void> | void) {
+export function requireAuth(handler: (req: VercelRequest, res: VercelResponse) => Promise<any> | any) {
   return async (req: VercelRequest, res: VercelResponse) => {
     if (!checkAuth(req)) {
       return res.status(401).json({ message: 'Unauthorized' });

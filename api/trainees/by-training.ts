@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { isAuthenticated } from "../../_lib/auth.js";
-import { storage } from "../../_lib/storage.js";
+import { isAuthenticated } from "../_lib/auth.js";
+import { storage } from "../_lib/storage.js";
 
 export default async function handler(
   req: VercelRequest,
@@ -16,11 +16,15 @@ export default async function handler(
     return res.status(405).json({ message: "Method not allowed" });
   }
 
-  const { id: trainingId } = req.query;
+  const { trainingId } = req.query;
+
+  if (!trainingId || typeof trainingId !== "string") {
+    return res.status(400).json({ message: "Training ID is required" });
+  }
 
   try {
     console.log("Fetching trainees for training ID:", trainingId);
-    const trainees = await storage.getTraineesByTrainingId(trainingId as string);
+    const trainees = await storage.getTraineesByTrainingId(trainingId);
     console.log("Trainees found:", trainees.length);
     return res.json(trainees);
   } catch (error) {
@@ -28,4 +32,3 @@ export default async function handler(
     return res.status(500).json({ message: "Failed to fetch trainees" });
   }
 }
-

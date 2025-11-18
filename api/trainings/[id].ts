@@ -9,6 +9,8 @@ export default async function handler(
 ) {
   const cookieHeader = req.headers.cookie || null;
   
+  console.log("Training [id] endpoint hit - Method:", req.method, "URL:", req.url, "Query:", req.query);
+  
   if (!isAuthenticated(cookieHeader)) {
     return res.status(401).json({ message: "Unauthorized" });
   }
@@ -17,9 +19,9 @@ export default async function handler(
 
   try {
     if (req.method === "GET") {
-      console.log("Fetching training with ID:", id);
+      console.log("Fetching training with ID:", id, "Type:", typeof id);
       const training = await storage.getTraining(id as string);
-      console.log("Training found:", training ? "yes" : "no");
+      console.log("Training found:", training ? "yes" : "no", training ? `Name: ${training.name}` : "");
       if (!training) {
         return res.status(404).json({ message: "Training not found" });
       }

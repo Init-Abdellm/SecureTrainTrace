@@ -63,7 +63,7 @@ export default function ExcelUpload() {
     },
     onSuccess: (data: UploadResult) => {
       setUploadResult(data);
-      queryClient.invalidateQueries({ queryKey: ["/api/trainings", id, "trainees"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/trainees/by-training?trainingId=" + id] });
       queryClient.invalidateQueries({ queryKey: ["/api/trainees"] });
 
       if (data.failed === 0) {

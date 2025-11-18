@@ -49,7 +49,7 @@ export default function TrainingDetail() {
   });
 
   const { data: trainees, isLoading: traineesLoading } = useQuery<Trainee[]>({
-    queryKey: ["/api/trainings", id, "trainees"],
+    queryKey: ["/api/trainees/by-training?trainingId=" + id],
     enabled: isAuthenticated && !!id,
   });
 
@@ -58,7 +58,7 @@ export default function TrainingDetail() {
       await apiRequest("DELETE", `/api/trainees/${traineeId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/trainings", id, "trainees"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/trainees/by-training?trainingId=" + id] });
       queryClient.invalidateQueries({ queryKey: ["/api/trainees"] });
       toast({
         title: "Success",
@@ -92,7 +92,7 @@ export default function TrainingDetail() {
       await apiRequest("PATCH", `/api/trainees/${traineeId}`, { status });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/trainings", id, "trainees"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/trainees/by-training?trainingId=" + id] });
       queryClient.invalidateQueries({ queryKey: ["/api/trainees"] });
       toast({
         title: "Success",

@@ -5,8 +5,8 @@ import {
   type InsertTraining,
   type Trainee,
   type InsertTrainee,
-} from "../../shared/schema";
-import { db } from "./db";
+} from "../../shared/schema.js";
+import { db } from "./db.js";
 import { eq } from "drizzle-orm";
 
 export interface IStorage {
@@ -16,7 +16,7 @@ export interface IStorage {
   createTraining(training: InsertTraining): Promise<Training>;
   updateTraining(id: string, training: Partial<InsertTraining>): Promise<Training | undefined>;
   deleteTraining(id: string): Promise<void>;
-  
+
   // Trainee operations
   getAllTrainees(): Promise<Trainee[]>;
   getTraineesByTrainingId(trainingId: string): Promise<Trainee[]>;

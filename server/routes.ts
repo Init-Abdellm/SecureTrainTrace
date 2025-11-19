@@ -126,7 +126,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         // Generate certificate
         const certificateId = `CERT-${randomUUID()}`;
-        const certificateUrl = await generateCertificate(trainee, training, certificateId);
+        const certificateUrl = await generateCertificate(trainee, training, certificateId, req);
 
         const updated = await storage.updateTrainee(req.params.id, {
           ...otherFields,
@@ -303,7 +303,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 async function generateCertificate(
   trainee: any,
   training: any,
-  certificateId: string
+  certificateId: string,
+  req: any
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     try {
@@ -373,10 +374,10 @@ async function generateCertificate(
 
       doc.moveDown(2);
 
-      // Generate QR code - use full domain from environment
-      const domain = process.env.APP_DOMAIN || 'localhost:1994';
-      const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
-      const verificationUrl = `${protocol}://${domain}/verify/${trainee.id}`;
+      // Generate QR code - use domain from request headers (works in both local and production)
+      const host = req.headers.host || req.headers['x-forwarded-host'] || 'localhost:1994';
+      const protocol = req.headers['x-forwarded-proto'] || (process.env.NODE_ENV === "production" ? "https" : "http");
+      const verificationUrl = `${protocol}://${host}/verify/${trainee.id}`;
 
       QRCode.toDataURL(verificationUrl, { width: 150 }, (err: Error | null | undefined, url: string) => {
         if (err) {

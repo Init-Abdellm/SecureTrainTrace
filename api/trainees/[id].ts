@@ -44,7 +44,7 @@ export default async function handler(
 
         // Generate certificate
         const certificateId = `CERT-${randomUUID()}`;
-        const certificateUrl = await generateCertificate(trainee, training, certificateId);
+        const certificateUrl = await generateCertificate(trainee, training, certificateId, req);
 
         const updated = await storage.updateTrainee(id as string, {
           ...otherFields,
@@ -80,7 +80,8 @@ export default async function handler(
 async function generateCertificate(
   trainee: any,
   training: any,
-  certificateId: string
+  certificateId: string,
+  req: VercelRequest
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     try {
@@ -136,11 +137,10 @@ async function generateCertificate(
 
       doc.moveDown(2);
 
-      // Generate QR code - use full domain from environment
-      // Vercel provides VERCEL_URL in production, or use APP_DOMAIN if set
-      const domain = process.env.APP_DOMAIN || process.env.VERCEL_URL || process.env.VERCEL_BRANCH_URL || 'localhost:5000';
-      const protocol = process.env.NODE_ENV === "production" || process.env.VERCEL ? "https" : "http";
-      const verificationUrl = `${protocol}://${domain}/verify/${trainee.id}`;
+      // Generate QR code - use domain from request headers (works in both local and Vercel)
+      const host = req.headers.host || req.headers['x-forwarded-host'] || 'localhost:1994';
+      const protocol = req.headers['x-forwarded-proto'] || (process.env.VERCEL ? 'https' : 'http');
+      const verificationUrl = `${protocol}://${host}/verify/${trainee.id}`;
 
       QRCode.toDataURL(verificationUrl, { width: 150 }, (err: Error | null | undefined, url: string) => {
         if (err) {

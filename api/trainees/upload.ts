@@ -3,9 +3,7 @@ import { isAuthenticated } from "../_lib/auth.js";
 import { storage } from "../_lib/storage.js";
 import { excelTraineeSchema } from "../../shared/schema.js";
 import * as XLSX from "xlsx";
-import multiparty from "multiparty";
-import { tmpdir } from "os";
-import { join } from "path";
+import * as Busboy from "busboy";
 
 export const config = {
   api: {
@@ -28,37 +26,61 @@ export default async function handler(
   }
 
   try {
-    // Use /tmp directory for Vercel serverless (only writable location)
-    const form = new multiparty.Form({
-      uploadDir: join(tmpdir(), "vercel-uploads"),
-    });
+    // Parse multipart form using busboy (works better with Vercel serverless)
+    const { fileBuffer, trainingId } = await new Promise<{ fileBuffer: Buffer; trainingId: string }>((resolve, reject) => {
+      const bb = Busboy({ headers: req.headers });
+      let fileBuffer: Buffer | null = null;
+      let trainingId: string | null = null;
 
-    const { fields, files } = await new Promise<{ fields: any; files: any }>((resolve, reject) => {
-      form.parse(req, (err, fields, files) => {
-        if (err) reject(err);
-        else resolve({ fields, files });
+      bb.on("file", (name, file, info) => {
+        const { filename, encoding, mimeType } = info;
+        if (name !== "file") {
+          file.resume(); // Drain file we don't need
+          return;
+        }
+
+        const chunks: Buffer[] = [];
+        file.on("data", (chunk: Buffer) => {
+          chunks.push(chunk);
+        });
+
+        file.on("end", () => {
+          fileBuffer = Buffer.concat(chunks);
+        });
       });
+
+      bb.on("field", (name, value) => {
+        if (name === "training_id") {
+          trainingId = value;
+        }
+      });
+
+      bb.on("close", () => {
+        if (!fileBuffer) {
+          reject(new Error("No file uploaded"));
+          return;
+        }
+        if (!trainingId) {
+          reject(new Error("Training ID is required"));
+          return;
+        }
+        resolve({ fileBuffer, trainingId });
+      });
+
+      bb.on("error", (err) => {
+        reject(err);
+      });
+
+      // Pipe the request to busboy
+      // VercelRequest extends IncomingMessage which is a readable stream
+      (req as any).pipe(bb);
     });
-
-    const file = files.file?.[0];
-    if (!file) {
-      return res.status(400).json({ message: "No file uploaded" });
-    }
-
-    const trainingId = fields.training_id?.[0];
-    if (!trainingId) {
-      return res.status(400).json({ message: "Training ID is required" });
-    }
 
     // Verify training exists
     const training = await storage.getTraining(trainingId);
     if (!training) {
       return res.status(404).json({ message: "Training not found" });
     }
-
-    // Read file buffer
-    const fs = await import("fs/promises");
-    const fileBuffer = await fs.readFile(file.path);
 
     // Parse Excel file
     const workbook = XLSX.read(fileBuffer, { type: 'buffer' });
@@ -118,14 +140,6 @@ export default async function handler(
     if (validTrainees.length > 0) {
       const created = await storage.createTrainees(validTrainees);
       imported = created.length;
-    }
-
-    // Clean up uploaded file
-    try {
-      const fs = await import("fs/promises");
-      await fs.unlink(file.path);
-    } catch (e) {
-      // Ignore cleanup errors
     }
 
     return res.json({

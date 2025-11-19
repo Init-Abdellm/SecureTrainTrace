@@ -3,7 +3,7 @@ import { isAuthenticated } from "../_lib/auth.js";
 import { storage } from "../_lib/storage.js";
 import { excelTraineeSchema } from "../../shared/schema.js";
 import * as XLSX from "xlsx";
-import * as Busboy from "busboy";
+// busboy will be imported dynamically to handle ESM/CommonJS compatibility
 
 export const config = {
   api: {
@@ -27,8 +27,12 @@ export default async function handler(
 
   try {
     // Parse multipart form using busboy (works better with Vercel serverless)
+    // Dynamic import to handle ESM/CommonJS compatibility
+    const busboyModule = await import("busboy");
+    const BusboyConstructor = (busboyModule.default || busboyModule) as any;
+    
     const { fileBuffer, trainingId } = await new Promise<{ fileBuffer: Buffer; trainingId: string }>((resolve, reject) => {
-      const bb = Busboy({ headers: req.headers });
+      const bb = BusboyConstructor({ headers: req.headers });
       let fileBuffer: Buffer | null = null;
       let trainingId: string | null = null;
 
